@@ -10,8 +10,8 @@ export default function Hero() {
     useEffect(() => {
         let i = 0;
         const typing = setInterval(() => {
-            if (i < text.length) {
-                setDisplayText((prev) => prev + text.charAt(i));
+            if (i <= text.length) {
+                setDisplayText(text.slice(0, i));
                 i++;
             } else {
                 clearInterval(typing);
