@@ -15,7 +15,7 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  title: "SYSTEM_READY: HELMI_KHAMIS",
+  title: "SYSTEM_READY: alt_cmd",
   description: "Minimalist Digital Matrix Portfolio",
 };
 

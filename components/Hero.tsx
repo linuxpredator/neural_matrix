@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useState, useEffect } from "react";
 
 export default function Hero() {
-    const text = "HELMI_KHAMIS";
+    const text = "alt_cmd";
     const [displayText, setDisplayText] = useState("");
 
     useEffect(() => {
