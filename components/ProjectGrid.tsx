@@ -6,12 +6,13 @@ import Link from "next/link";
 
 const projects = [
     {
-        id: "ecommerce-ui",
-        title: "NEON_MARKET",
-        description: "Next-gen e-commerce interface with real-time inventory tracking and crypto payments.",
-        tech: ["Next.js", "Stripe", "Web3"],
+        id: "tiktokuserfinder",
+        title: "TIKTOK_USER_FINDER",
+        description: "Advanced OSINT tool for retrieving TikTok user metadata and geographic information.",
+        tech: ["Next.js", "API", "OSINT"],
         status: "ONLINE",
-        delay: 0.1
+        delay: 0.1,
+        link: "/projek/tiktokuserfinder"
     },
     {
         id: "saas-dashboard",
@@ -100,7 +101,7 @@ export default function ProjectGrid() {
 
                             <div className="flex items-center gap-4 mt-auto">
                                 <Link
-                                    href={`/demo/${project.id}`}
+                                    href={project.link || `/demo/${project.id}`}
                                     className="flex items-center gap-2 text-sm font-mono text-white hover:text-matrix-green transition-colors"
                                 >
                                     <ExternalLink size={14} />
