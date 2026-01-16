@@ -45,6 +45,14 @@ const projects = [
         tech: ["TypeScript", "Xterm.js", "Linux"],
         status: "ROOT_ACCESS",
         delay: 0.5
+    },
+    {
+        id: "quantum-cipher",
+        title: "CIPHER_NET",
+        description: "Quantum-resistant encryption protocol for decentralized communications.",
+        tech: ["Rust", "WASM", "Cryptography"],
+        status: "ENCRYPTED",
+        delay: 0.6
     }
 ];
 

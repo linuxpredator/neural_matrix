@@ -179,6 +179,11 @@ export default function TikTokUserFinder() {
                         TIKTOK<span className="text-matrix-green animate-pulse">_</span>USER<span className="text-matrix-green animate-pulse">_</span>FINDER
                     </h1>
 
+                    <div className="text-center text-xs md:text-sm text-gray-400 font-mono mb-8 tracking-wide">
+                        [SYSTEM_MESSAGE]: Enter target username to retrieve metadata.<br />
+                        <span className="text-red-500/80 mt-1 inline-block">WARNING: Use for educational purposes only.</span>
+                    </div>
+
                     <form onSubmit={handleSearch} className="flex flex-col md:flex-row gap-4">
                         <div className="relative flex-grow group">
                             <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-matrix-green/70 group-focus-within:text-matrix-green transition-colors" size={20} />
@@ -188,17 +193,17 @@ export default function TikTokUserFinder() {
                                 type="text"
                                 value={username}
                                 onChange={(e) => setUsername(e.target.value)}
-                                placeholder="ENTER USERNAME..."
+                                placeholder="Enter Username (e.g. alt_cmd)"
                                 autoComplete="off"
                                 data-lpignore="true"
                                 spellCheck="false"
-                                className="w-full bg-black border border-matrix-green/50 text-white px-12 py-4 focus:outline-none focus:border-matrix-green focus:shadow-[0_0_15px_rgba(0,255,0,0.2)] transition-all font-mono placeholder:text-gray-700 appearance-none"
+                                className="w-full bg-black border border-matrix-green/50 text-white px-12 py-4 focus:outline-none focus:border-matrix-green focus:shadow-[0_0_15px_rgba(0,255,0,0.2)] transition-all font-mono placeholder:text-gray-600 appearance-none"
                             />
                         </div>
                         <button
                             type="submit"
                             disabled={isLoading}
-                            className="bg-matrix-green/10 border-2 border-matrix-green px-10 py-3 text-matrix-green font-bold tracking-widest hover:bg-matrix-green hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase"
+                            className="bg-matrix-green/10 border-2 border-matrix-green px-10 py-3 text-matrix-green font-bold tracking-widest hover:bg-matrix-green hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 uppercase font-terminal text-lg"
                         >
                             {isLoading ? <Loader2 className="animate-spin" /> : "EXECUTE"}
                         </button>
@@ -216,7 +221,7 @@ export default function TikTokUserFinder() {
                     <motion.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="w-full border-2 border-matrix-green bg-black/90 backdrop-blur-sm rounded-lg overflow-hidden shadow-[0_0_20px_rgba(0,255,0,0.15)] relative"
+                        className="w-full border-2 border-matrix-green bg-black/90 backdrop-blur-sm shadow-[0_0_20px_rgba(0,255,0,0.15)] relative"
                     >
                         {/* Corner Accents */}
                         <div className="absolute -top-1 -left-1 w-4 h-4 border-t-4 border-l-4 border-matrix-green z-20" />

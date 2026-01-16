@@ -1,5 +1,5 @@
 import { load } from "cheerio";
-import { TikTokUserRegion } from "@/lib/types/tiktok";
+import { TikTokUserRegion, RegionDetectionResult } from "@/lib/types/tiktok";
 
 /**
  * Service to detect TikTok Account Region using Advanced CDN Analysis
@@ -8,26 +8,56 @@ import { TikTokUserRegion } from "@/lib/types/tiktok";
 
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
-export async function detectTikTokRegion(username: string): Promise<TikTokUserRegion> {
+export async function detectTikTokRegion(username: string, htmlContext?: string, knownRegion?: string): Promise<RegionDetectionResult> {
     const cleanUsername = username.replace(/^@/, "");
 
     try {
-        const response = await fetch(`https://www.tiktok.com/@${cleanUsername}`, {
-            headers: { "User-Agent": USER_AGENT },
-        });
+        let html = htmlContext;
 
-        if (!response.ok) {
-            throw new Error("Failed to fetch profile");
+        // Only fetch if no context provided
+        if (!html) {
+            const response = await fetch(`https://www.tiktok.com/@${cleanUsername}`, {
+                headers: { "User-Agent": USER_AGENT },
+            });
+
+            if (!response.ok) {
+                // If fetch fails, we can't do anything. Return unknown.
+                console.warn("[TikTokRegionService] Fetch failed, returning Unknown");
+                return {
+                    username: cleanUsername,
+                    region: "Unknown",
+                    country_code: "Unknown",
+                    confidence_score: 0.0,
+                    detection_method: "FAILED_FETCH",
+                    success: false
+                };
+            }
+            html = await response.text();
         }
 
-        const html = await response.text();
+        // --- STRATEGY 1: EXPLICIT METADATA (From Route Parse) ---
+        // We rely on the robustness of the route.ts JSON parser.
 
-        // --- STRATEGY 1: DEEP CDN PATTERN SCANNING (Highest Confidence) ---
-        // Scan the ENTIRE HTML for media URLs containing region indicators.
-        // This bypasses the need to parse specific JSON structures which are unstable.
+        if (knownRegion && knownRegion.length === 2 && knownRegion !== "US") {
+            return {
+                username: cleanUsername,
+                region: knownRegion,
+                country_code: knownRegion,
+                confidence_score: 0.95,
+                detection_method: "METADATA",
+                success: true
+            };
+        }
+
+        // Removed Regex matching to avoid Viewer Bias (getting 'MY' from app context).
+        // Fallback to CDN Analysis below.
+
+        // --- STRATEGY 2: DEEP CDN PATTERN SCANNING (Fallback) ---
+        // If metadata is empty/missing, we look at where the content is hosted.
+        // This is efficient for finding the "Host Region" but might misidentify 'MY' as 'SG'.
+        // Only trigger this if Metadata failed.
 
         const cdnRegex = /https:\\?\/\\?\/[a-zA-Z0-9-]+\.(tiktokcdn|tiktokv|akamaized)\.[a-zA-Z0-9.]+\/[^"']+/g;
-        // Limit to first 200 matches to avoid DoS on massive pages, usually first 50 is enough
         const matches = (html.match(cdnRegex) || []).slice(0, 100);
 
         for (const rawUrl of matches) {
@@ -38,24 +68,12 @@ export async function detectTikTokRegion(username: string): Promise<TikTokUserRe
                 return {
                     username: cleanUsername,
                     region: region,
-                    country_code: region, // Map if needed, currently same
-                    confidence_score: 1.0, // High confidence because it comes from CDN
-                    detection_method: "CDN_ANALYSIS"
+                    country_code: region,
+                    confidence_score: 0.75, // Moderate confidence (Host Region != Registration Region)
+                    detection_method: "CDN_ANALYSIS",
+                    success: true
                 };
             }
-        }
-
-        // --- STRATEGY 2: METADATA FALLBACK ---
-        // If no CDN match (rare), try to find "region" key in JSON
-        const regionMatch = html.match(/"region":\s*"([A-Z]{2})"/);
-        if (regionMatch && regionMatch[1]) {
-            return {
-                username: cleanUsername,
-                region: regionMatch[1],
-                country_code: regionMatch[1],
-                confidence_score: 0.8,
-                detection_method: "METADATA"
-            };
         }
 
         return {
@@ -63,28 +81,40 @@ export async function detectTikTokRegion(username: string): Promise<TikTokUserRe
             region: "Unknown",
             country_code: "Unknown",
             confidence_score: 0.0,
-            detection_method: "FALLBACK"
+            detection_method: "FALLBACK",
+            success: false
         };
 
     } catch (error) {
         console.error("[TikTokRegionService] Error:", error);
-        throw error;
+        // Do not throw, return safe fallback
+        return {
+            username: cleanUsername,
+            region: "Unknown",
+            country_code: "Unknown",
+            confidence_score: 0.0,
+            detection_method: "ERROR",
+            success: false
+        };
     }
 }
 
 /**
  * Analyzes a single CDN URL to extract region code.
- * Based on 'The Omar Method' research.
+ * Expanded to support Global Regions dynamically.
  */
 function analyzeCdnUrl(url: string): string | null {
-    // EUROPE
+    // 1. Explicit Mappings for known major hubs
     if (/[.-]eu[.-]|tiktokcdn-eu|europe|euttp/.test(url)) return "EU";
-
-    // ASIA / SINGAPORE (Common for MY/SG/ID)
     if (/alisg|[.-]sg[.-]|tiktokcdn-sg|akamaized.*sg/.test(url)) return "SG";
-
-    // USA
     if (/maliva|[.-]va[.-]|tiktokcdn-us|useast|us-east/.test(url)) return "US";
+
+    // 2. Dynamic 2-Letter Code Extraction (Global Support)
+    // Matches patterns like: tiktokcdn-my, tiktokcdn-jp, tiktokcdn-br
+    const genericMatch = url.match(/tiktokcdn-([a-z]{2})/);
+    if (genericMatch && genericMatch[1]) {
+        return genericMatch[1].toUpperCase();
+    }
 
     return null;
 }

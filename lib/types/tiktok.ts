@@ -4,12 +4,14 @@ export interface TikTokUserRegion {
     region: string; // ISO code e.g. "MY", "US", "SG" or "Unknown"
     country_code: string; // "MY", "US" etc.
     confidence_score: number; // 0.0 to 1.0 (1.0 = High Confidence CDN Match)
-    detection_method: "CDN_ANALYSIS" | "METADATA" | "HEURISTIC" | "FALLBACK";
     cached?: boolean; // Debug flag to show if served from cache
 }
 
-export interface RegionDetectionResult {
+export type RegionDetectionMethod = "CDN_ANALYSIS" | "METADATA" | "HEURISTIC" | "FALLBACK" | "FAILED_FETCH" | "ERROR";
+
+export interface RegionDetectionResult extends TikTokUserRegion {
+    detection_method: RegionDetectionMethod;
     success: boolean;
-    data?: TikTokUserRegion;
+    data?: TikTokUserRegion; // This data property is redundant if extending TikTokUserRegion
     error?: string;
 }

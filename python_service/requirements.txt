@@ -1,0 +1,7 @@
+TikTokApi>=6.0.0
+playwright>=1.39.0
+python-dotenv>=1.0.0
+asyncio>=3.4.3
+fastapi>=0.104.0
+uvicorn>=0.24.0
+nest_asyncio>=1.5.8
