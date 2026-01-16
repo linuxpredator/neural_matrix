@@ -16,9 +16,9 @@ const projects = [
     },
     {
         id: "saas-dashboard",
-        title: "DATA_NEXUS",
-        description: "Analytics dashboard for visualizing high-dimensional data streams.",
-        tech: ["React", "D3.js", "Tailwind"],
+        title: "MQL5_CLOUD_BACKTESTER",
+        description: "Cloud-based fintech backtesting platform with real-time equity simulation.",
+        tech: ["Next.js", "Recharts", "Fintech"],
         status: "OPERATIONAL",
         delay: 0.2
     },
