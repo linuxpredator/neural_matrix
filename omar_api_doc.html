@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok API - omar-thing</title>
+  <meta name="description" content="Access TikTok user data with our Premium API. Sub-second response times.">
+  <link rel="icon" href="fqqWP8a.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-Q1M32PCW3Y"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-Q1M32PCW3Y');
+</script>
+  
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #1e1e2e;
+      --bg-card: #181825;
+      --bg-surface: #313244;
+      --text: #cdd6f4;
+      --text-soft: #bac2de;
+      --text-softer: #6c7086;
+      --accent: #f38ba8;
+      --accent-secondary: #89b4fa;
+      --green: #a6e3a1;
+      --orange: #fab387;
+      --purple: #cba6f7;
+      --border: #45475a;
+      --border-light: #585b70;
+      --font-scale: 1;
+    }
+
+    [data-theme="light"] {
+      --bg: #eff1f5;
+      --bg-card: #ffffff;
+      --bg-surface: #e6e9ef;
+      --text: #4c4f69;
+      --text-soft: #5c5f77;
+      --text-softer: #8c8fa1;
+      --accent: #d20f39;
+      --accent-secondary: #1e66f5;
+      --green: #40a02b;
+      --orange: #fe640b;
+      --purple: #8839ef;
+      --border: #ccd0da;
+      --border-light: #bcc0cc;
+    }
+
+    html { font-size: calc(16px * var(--font-scale)); }
+    html.font-large { --font-scale: 1.15; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Noto Sans JP', sans-serif;
+      font-weight: 400;
+      line-height: 1.7;
+      min-height: 100vh;
+    }
+
+    ::selection { background: var(--accent); color: var(--bg); }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: 900px; margin: 0 auto; padding: 0 24px; }
+
+    /* Header */
+    header { padding: 32px 0; border-bottom: 1px solid var(--border); }
+    .header-inner { display: flex; justify-content: space-between; align-items: center; }
+    .logo {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .logo-dot { width: 8px; height: 8px; background: var(--accent); border-radius: 50%; }
+    nav { display: flex; gap: 24px; font-size: 0.85rem; align-items: center; }
+    nav a { color: var(--text-soft); transition: color 0.2s; }
+    nav a:hover { color: var(--accent); }
+
+    .nav-controls {
+      display: flex;
+      gap: 8px;
+      margin-left: 8px;
+      padding-left: 16px;
+      border-left: 1px solid var(--border);
+    }
+    .control-btn {
+      background: var(--bg-surface);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      width: 32px;
+      height: 32px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: all 0.2s;
+    }
+    .control-btn:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    .control-btn.active {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    /* Hero */
+    .hero { padding: 80px 0 60px; text-align: center; }
+    .hero-tag {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--green);
+      border: 1px solid var(--green);
+      padding: 6px 12px;
+      border-radius: 4px;
+      margin-bottom: 24px;
+    }
+    .hero h1 { font-size: 2.8rem; font-weight: 700; letter-spacing: -1px; margin-bottom: 16px; }
+    .hero h1 span { font-family: 'JetBrains Mono', monospace; color: var(--accent); font-weight: 500; }
+    .hero p { color: var(--text-soft); font-size: 1.05rem; max-width: 500px; margin: 0 auto; }
+    .hero p.tagline { font-size: 0.9rem; color: var(--text-softer); margin-top: 8px; }
+
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 48px;
+      margin-top: 40px;
+    }
+    .hero-stat { text-align: center; }
+    .hero-stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--accent-secondary);
+    }
+    .hero-stat-label {
+      font-size: 0.8rem;
+      color: var(--text-softer);
+      margin-top: 4px;
+    }
+
+    /* Sections */
+    section { padding: 50px 0; }
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      color: var(--text-softer);
+      margin-bottom: 32px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Pricing */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .pricing-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 20px;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .pricing-card:hover {
+      border-color: var(--border-light);
+      transform: translateY(-2px);
+    }
+    .pricing-card.featured {
+      border-color: var(--accent-secondary);
+    }
+    .pricing-card.featured .popular-tag {
+      position: absolute;
+      top: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--accent-secondary);
+      color: var(--bg);
+      padding: 4px 12px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 600;
+    }
+    .pricing-card.disabled {
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    .pricing-card.disabled::after {
+      content: 'SOON';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-10deg);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--text-softer);
+      letter-spacing: 3px;
+    }
+
+    .plan-name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-soft);
+      margin-bottom: 8px;
+    }
+    .plan-price {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .plan-period {
+      font-size: 0.8rem;
+      color: var(--text-softer);
+      margin-bottom: 20px;
+    }
+    .plan-features {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+    .plan-features li {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      padding: 6px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .plan-features li i {
+      color: var(--green);
+      font-size: 0.7rem;
+    }
+    .plan-btn {
+      display: block;
+      width: 100%;
+      padding: 12px;
+      background: var(--accent);
+      color: var(--bg);
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.2s;
+    }
+    .plan-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 15px rgba(243, 139, 168, 0.3);
+    }
+
+    .pricing-note {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.85rem;
+      color: var(--text-softer);
+    }
+    .pricing-note a {
+      color: var(--accent);
+    }
+    .pricing-note a:hover {
+      text-decoration: underline;
+    }
+
+    /* Features List */
+    .features-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 24px;
+    }
+    .feature-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .feature-item i {
+      color: var(--green);
+      margin-top: 3px;
+    }
+    .feature-item p {
+      color: var(--text-soft);
+      font-size: 0.9rem;
+    }
+    .feature-item a {
+      color: var(--accent-secondary);
+    }
+    .feature-item a:hover {
+      text-decoration: underline;
+    }
+
+    /* Endpoints */
+    .endpoints-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .endpoint {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .endpoint:hover { border-color: var(--border-light); }
+
+    .endpoint-header {
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .endpoint-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .endpoint-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--bg-surface);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+    }
+    .endpoint-icon.fast { color: var(--green); }
+    .endpoint-icon.data { color: var(--accent-secondary); }
+    .endpoint-icon.premium { color: var(--purple); }
+
+    .endpoint-title {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .endpoint-title .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-weight: 500;
+    }
+    .badge-fast { background: rgba(166, 227, 161, 0.15); color: var(--green); }
+    .badge-lifetime { background: rgba(203, 166, 247, 0.15); color: var(--purple); }
+
+    .endpoint-desc {
+      font-size: 0.8rem;
+      color: var(--text-softer);
+    }
+    .endpoint-toggle {
+      color: var(--text-softer);
+      transition: transform 0.2s;
+    }
+    .endpoint.expanded .endpoint-toggle { transform: rotate(180deg); }
+
+    .endpoint-content {
+      display: none;
+      padding: 0 20px 20px;
+      border-top: 1px dashed var(--border);
+    }
+    .endpoint.expanded .endpoint-content { display: block; }
+
+    .endpoint-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 16px 0;
+    }
+    .endpoint-tags span {
+      font-size: 0.75rem;
+      background: var(--bg-surface);
+      padding: 5px 10px;
+      border-radius: 4px;
+      color: var(--text-soft);
+    }
+
+    .code-block {
+      background: #11111b;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      position: relative;
+      overflow-x: auto;
+    }
+    .code-block code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--text-soft);
+      white-space: nowrap;
+    }
+    .code-block .url { color: var(--accent-secondary); }
+    .code-block .param { color: var(--orange); }
+    .code-block .value { color: var(--green); }
+
+    .copy-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--bg-surface);
+      border: none;
+      color: var(--text-softer);
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover { background: var(--border); color: var(--text); }
+
+    .endpoint-note {
+      font-size: 0.8rem;
+      color: var(--text-softer);
+      margin-top: 12px;
+    }
+    .endpoint-note code {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--orange);
+    }
+
+    .response-toggle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      color: var(--accent-secondary);
+      cursor: pointer;
+      margin-top: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+      padding: 8px 12px;
+      background: var(--bg-surface);
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      font-weight: 500;
+    }
+    .response-toggle:hover { 
+      color: var(--accent); 
+      background: var(--border);
+      transform: translateY(-1px);
+    }
+    .response-toggle::before { content: "▶"; font-size: 0.7rem; }
+    .response-toggle.active::before { content: "▼"; }
+
+    .response-content {
+      display: none;
+      margin-top: 12px;
+    }
+    .response-toggle.active + .response-content { display: block; }
+
+    .response-block {
+      background: #11111b;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      max-height: 280px;
+      overflow: auto;
+    }
+    .response-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    /* Rules */
+    .rules-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .rule-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+    .rule-item i {
+      color: var(--purple);
+      margin-top: 2px;
+      width: 16px;
+    }
+    .rule-item p {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+    .rule-item strong { color: var(--text); }
+    .rule-item a { color: var(--accent-secondary); }
+    .rule-item a:hover { text-decoration: underline; }
+
+    /* Info Grid */
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+    .info-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .info-card i {
+      color: var(--accent-secondary);
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+    .info-card h4 {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .info-card p {
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+    .info-card a { color: var(--accent); }
+    .info-card a:hover { text-decoration: underline; }
+
+    /* FAQ */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 24px;
+    }
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    .faq-question {
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .faq-question:hover {
+      background: var(--bg-surface);
+    }
+    .faq-question span {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+    .faq-question i {
+      color: var(--text-softer);
+      font-size: 0.8rem;
+      transition: transform 0.2s;
+    }
+    .faq-item.active .faq-question i {
+      transform: rotate(180deg);
+    }
+    .faq-answer {
+      display: none;
+      padding: 0 20px 16px;
+    }
+    .faq-item.active .faq-answer {
+      display: block;
+    }
+    .faq-answer p {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    /* Footer */
+    footer {
+      padding: 32px 0;
+      border-top: 1px solid var(--border);
+      text-align: center;
+    }
+    footer p { font-size: 0.8rem; color: var(--text-softer); }
+    footer a { color: var(--text-soft); margin: 0 8px; transition: color 0.2s; }
+    footer a:hover { color: var(--accent); }
+
+    /* Responsive */
+    @media (max-width: 800px) {
+      .pricing-grid { grid-template-columns: 1fr; max-width: 350px; margin: 0 auto; }
+      .info-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 32px; flex-wrap: wrap; }
+    }
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 2rem; }
+      .hero p { font-size: 0.95rem; }
+      nav { gap: 12px; font-size: 0.8rem; }
+      .nav-controls { margin-left: 4px; padding-left: 12px; gap: 6px; }
+      .control-btn { width: 28px; height: 28px; font-size: 0.75rem; }
+      .endpoint-header { padding: 16px; }
+      .endpoint-left { gap: 10px; }
+      .endpoint-icon { width: 36px; height: 36px; font-size: 0.9rem; }
+      .endpoint-title { font-size: 0.9rem; }
+      .code-block code { font-size: 0.7rem; }
+      .container { padding: 0 16px; }
+    }
+    @media (max-width: 480px) {
+      .header-inner { flex-direction: column; gap: 16px; }
+      nav { justify-content: center; flex-wrap: wrap; }
+      .nav-controls { border-left: none; padding-left: 0; margin-left: 0; }
+      .hero { padding: 50px 0 40px; }
+      .hero h1 { font-size: 1.8rem; }
+      .hero-stat-value { font-size: 1.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="container">
+      <div class="header-inner">
+        <a href="index.html" class="logo">
+          <span class="logo-dot"></span>
+          omar-thing/api
+        </a>
+        <nav>
+          <a href="index.html">tools</a>
+          <a href="srcs.html">source</a>
+          <a href="https://t.me/f1ifb2" target="_blank">contact</a>
+          <div class="nav-controls">
+            <button class="control-btn" id="themeToggle" onclick="toggleTheme()" title="Toggle light/dark mode">
+              <i class="fas fa-sun"></i>
+            </button>
+            <button class="control-btn" id="fontToggle" onclick="toggleFont()" title="Toggle font size">
+              <i class="fas fa-font"></i>
+            </button>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container">
+        <a href="https://stats.uptimerobot.com/RXQz544vBY" target="_blank" class="hero-tag" style="text-decoration: none;">● all systems operational</a>
+        <h1>TikTok <span>Data API</span></h1>
+        <p>fast, reliable access to TikTok profiles, stats, stories, and more. built for developers who need speed.</p>
+        <p class="tagline">made with LOVE btw &lt;3</p>
+        
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hero-stat-value">&lt;1s</div>
+            <div class="hero-stat-label">response time</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">99.9%</div>
+            <div class="hero-stat-label">uptime</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hero-stat-value">10k+</div>
+            <div class="hero-stat-label">daily requests</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section>
+      <div class="container">
+        <div class="section-label">pricing</div>
+        
+        <div class="pricing-grid">
+          <!-- Monthly -->
+          <div class="pricing-card">
+            <div class="plan-name">monthly</div>
+            <div class="plan-price">$5.99</div>
+            <div class="plan-period">per month</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> 60 req/min, 3k req/day</li>
+              <li><i class="fas fa-check"></i> Profile, Tracker, Analysis, etc.</li>
+              <li><i class="fas fa-check"></i> Cancel anytime</li>
+            </ul>
+            <a href="https://ko-fi.com/iamjamie/tiers" target="_blank" class="plan-btn">get started</a>
+          </div>
+
+          <!-- Lifetime -->
+          <div class="pricing-card featured">
+            <span class="popular-tag">best value</span>
+            <div class="plan-name">lifetime</div>
+            <div class="plan-price">$35</div>
+            <div class="plan-period">one-time</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> 90 req/min, 20k req/day</li>
+              <li><i class="fas fa-check"></i> All Endpoints Access</li>
+              <li><i class="fas fa-check"></i> Stories, Comments, Following, etc.</li>
+              <li><i class="fas fa-check"></i> Priority Support</li>
+            </ul>
+            <a href="https://ko-fi.com/s/227d1f75db" target="_blank" class="plan-btn">get lifetime</a>
+          </div>
+
+          <!-- 3 Months -->
+          <div class="pricing-card disabled">
+            <div class="plan-name">3 months</div>
+            <div class="plan-price">$15</div>
+            <div class="plan-period">per 3 months</div>
+            <ul class="plan-features">
+              <li><i class="fas fa-check"></i> 70 req/min, 10k req/day</li>
+              <li><i class="fas fa-check"></i> All Standard Features</li>
+            </ul>
+            <span class="plan-btn" style="opacity: 0.5; cursor: default;">coming soon</span>
+          </div>
+        </div>
+
+        <div class="pricing-note">
+          <p style="margin-bottom: 8px;">prefer crypto?</p>
+          <div style="background: var(--bg-card); border: 1px solid var(--border); padding: 15px; border-radius: 8px; display: inline-block; text-align: left;">
+            <p style="margin-bottom: 5px;">
+              <span style="color: var(--text-soft);">Binance ID:</span> 
+              <span style="font-family: 'JetBrains Mono', monospace; color: var(--accent-secondary); margin-left: 5px;">810763557</span>
+            </p>
+            <p style="margin-bottom: 10px; word-break: break-all;">
+              <span style="color: var(--text-soft);">USDT (TRC20):</span> 
+              <span style="font-family: 'JetBrains Mono', monospace; color: var(--accent-secondary); margin-left: 5px;">TQjoRyWLadfGmXgGLZippnikXLWkwHdXBy</span>
+            </p>
+            <p style="font-size: 0.8rem; border-top: 1px dashed var(--border); padding-top: 8px; color: var(--text-softer);">
+              After payment, send screenshot (shown the order id or nickname) to <a href="https://t.me/f1ifb2" target="_blank">Telegram</a> or <a href="mailto:owner@omar-thing.site">owner@omar-thing.site</a> and wait for response.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- What You Get -->
+    <section>
+      <div class="container">
+        <div class="section-label">what you get</div>
+        
+        <div class="features-list">
+          <div class="feature-item">
+            <i class="fas fa-bolt"></i>
+            <p><strong>Fast & Reliable endpoints:</strong> Built for stable and quick responses. Optimized for concurrent requests with sub-second response times.</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-chart-line"></i>
+            <p><strong>Full Profile Analysis:</strong> Access to <a href="https://omar-thing.site/full-analysis" target="_blank">omar-thing.site/full-analysis</a></p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-crosshairs"></i>
+            <p><strong>User Tracker:</strong> Access to <a href="https://omar-thing.site/tracker" target="_blank">omar-thing.site/tracker</a></p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-envelope"></i>
+            <p><strong>Email 2 Username tool:</strong> Access to <a href="https://omar-thing.site/email2username" target="_blank">omar-thing.site/email2username</a>(note: this tool is not stable)</p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-retweet"></i>
+            <p><strong>Reposts Viewer:</strong> Unlimited Access to <a href="https://omar-thing.site/tiktok_reposts_viewer" target="_blank">omar-thing.site/tiktok_reposts_viewer</a></p>
+          </div>
+          <div class="feature-item">
+            <i class="fas fa-headset"></i>
+            <p><strong>Premium Support:</strong> Direct support via <a href="https://t.me/f1ifb2" target="_blank">Telegram</a> or <a href="/cdn-cgi/l/email-protection#46293128233406292b27346b322e2f282168352f3223">Email</a> for all subscribers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Endpoints -->
+    <section>
+      <div class="container">
+        <div class="section-label">api endpoints</div>
+
+        <div class="endpoints-list">
+          <!-- User Profile -->
+          <div class="endpoint expanded" id="ep-profile">
+            <div class="endpoint-header" onclick="toggleEndpoint('ep-profile')">
+              <div class="endpoint-left">
+                <div class="endpoint-icon fast"><i class="fas fa-bolt"></i></div>
+                <div>
+                  <div class="endpoint-title">
+                    User Profile
+                    <span class="badge badge-fast">⚡ &lt;1s</span>
+                  </div>
+                  <div class="endpoint-desc">detailed profile info for any TikTok user</div>
+                </div>
+              </div>
+              <i class="fas fa-chevron-down endpoint-toggle"></i>
+            </div>
+            <div class="endpoint-content">
+              <div class="endpoint-tags">
+                <span>concurrent requests optimized</span>
+                <span>sub-second response</span>
+                <span>real-time data</span>
+                <span>all plans</span>
+              </div>
+              <div class="code-block">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&username=</span><span class="value">tiktok</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 see example response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "profile": {
+    "Nickname": "TikTok",
+    "Username": "@tiktok",
+    "Country": "United States",
+    "Language": "english",
+    "About": "One TikTok can make a big impact",
+    "User ID": "107955",
+    "SecUID": "MS4wLjABAAAAv7iSuuXDJGDvJkmH_vz1qkDZYo1apxgzaxdBSeIuPiM",
+    "Bio Link": "linktr.ee/tiktok",
+    "Account Created": "2015-02-28 17:22:29",
+    "Nickname Last Modified": "2021-12-03 19:26:40",
+    "Username Last Modified": "N/A",
+    "Avatar URL": "https://p16-sign-va.tiktokcdn.com/..."
+  },
+  "stats": {
+    "Followers": "90,591,385",
+    "Following": "6",
+    "Hearts": "422,350,756",
+    "Videos": "1,230",
+    "Friends": "1"
+  }
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Full Analysis -->
+          <div class="endpoint" id="ep-full">
+            <div class="endpoint-header" onclick="toggleEndpoint('ep-full')">
+              <div class="endpoint-left">
+                <div class="endpoint-icon data"><i class="fas fa-chart-line"></i></div>
+                <div>
+                  <div class="endpoint-title">Full Profile Analysis</div>
+                  <div class="endpoint-desc">comprehensive analytics with engagement metrics</div>
+                </div>
+              </div>
+              <i class="fas fa-chevron-down endpoint-toggle"></i>
+            </div>
+            <div class="endpoint-content">
+              <div class="endpoint-tags">
+                <span>engagement rate</span>
+                <span>posting schedule</span>
+                <span>shadow ban check</span>
+                <span>viral potential</span>
+                <span>top hashtags</span>
+              </div>
+              <div class="code-block">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&username=</span><span class="value">tiktok</span><span class="param">&type=</span><span class="value">full</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 📋 see example response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "audience_and_timing_insights": {
+    "geo_indicators": {
+      "top_10_languages_in_description": [
+        "English"
+      ],
+      "top_10_regions_from_videos": []
+    },
+    "posting_schedule": {
+      "most_active_day": "Friday",
+      "most_active_hour_utc": "17:00",
+      "optimal_posting_day": "Friday",
+      "optimal_posting_hour_utc": "N/A",
+      "performance_by_day": {
+        "Friday": {
+          "avgEngagement": 191525.4,
+          "avgViews": 1428609.4,
+          "posts": 5,
+          "totalEngagement": 957627,
+          "totalViews": 7143047
+        },
+        "Monday": {
+          "avgEngagement": 0,
+          "avgViews": 0,
+          "posts": 0,
+          "totalEngagement": 0,
+          "totalViews": 0
+        },
+        "Saturday": {
+          "avgEngagement": 131155.0,
+          "avgViews": 2728175.0,
+          "posts": 1,
+          "totalEngagement": 131155,
+          "totalViews": 2728175
+        },
+        "Sunday": {
+          "avgEngagement": 137184.0,
+          "avgViews": 1703900.0,
+          "posts": 1,
+          "totalEngagement": 137184,
+          "totalViews": 1703900
+        },
+        "Thursday": {
+          "avgEngagement": 120924.0,
+          "avgViews": 1621188.0,
+          "posts": 1,
+          "totalEngagement": 120924,
+          "totalViews": 1621188
+        },
+        "Tuesday": {
+          "avgEngagement": 59174.67,
+          "avgViews": 912633.33,
+          "posts": 3,
+          "totalEngagement": 177524,
+          "totalViews": 2737900
+        },
+        "Wednesday": {
+          "avgEngagement": 0,
+          "avgViews": 0,
+          "posts": 0,
+          "totalEngagement": 0,
+          "totalViews": 0
+        }
+      },
+      "performance_by_hour": {
+        "03": {
+          "avgEngagement": 137184.0,
+          "avgViews": 1703900.0,
+          "posts": 1,
+          "totalEngagement": 137184,
+          "totalViews": 1703900
+        },
+        "06": {
+          "avgEngagement": 389559.0,
+          "avgViews": 2113150.0,
+          "posts": 1,
+          "totalEngagement": 389559,
+          "totalViews": 2113150
+        },
+        "07": {
+          "avgEngagement": 155397.0,
+          "avgViews": 733281.0,
+          "posts": 1,
+          "totalEngagement": 155397,
+          "totalViews": 733281
+        },
+        "17": {
+          "avgEngagement": 126039.5,
+          "avgViews": 2174681.5,
+          "posts": 2,
+          "totalEngagement": 252079,
+          "totalViews": 4349363
+        },
+        "19": {
+          "avgEngagement": 29202.0,
+          "avgViews": 621892.0,
+          "posts": 1,
+          "totalEngagement": 29202,
+          "totalViews": 621892
+        },
+        "20": {
+          "avgEngagement": 121231.0,
+          "avgViews": 1843844.0,
+          "posts": 1,
+          "totalEngagement": 121231,
+          "totalViews": 1843844
+        },
+        "21": {
+          "avgEngagement": 96985.0,
+          "avgViews": 514756.0,
+          "posts": 1,
+          "totalEngagement": 96985,
+          "totalViews": 514756
+        },
+        "22": {
+          "avgEngagement": 157843.0,
+          "avgViews": 1890930.0,
+          "posts": 2,
+          "totalEngagement": 315686,
+          "totalViews": 3781860
+        },
+        "23": {
+          "avgEngagement": 27091.0,
+          "avgViews": 272164.0,
+          "posts": 1,
+          "totalEngagement": 27091,
+          "totalViews": 272164
+        }
+      },
+      "posting_frequency": {
+        "average_posts_per_week": 0.4,
+        "posting_consistency_score": 41,
+        "total_days_analyzed": 211
+      },
+      "posting_heatmap_day_vs_hour_utc": {
+        "Friday": {
+          "06": 1,
+          "07": 1,
+          "21": 1,
+          "22": 2
+        },
+        "Saturday": {
+          "17": 1
+        },
+        "Sunday": {
+          "03": 1
+        },
+        "Thursday": {
+          "17": 1
+        },
+        "Tuesday": {
+          "19": 1,
+          "20": 1,
+          "23": 1
+        }
+      }
+    }
+  },
+  "content_strategy_deep_dive": {
+    "content_trends": {
+      "content_consistency_score": 41,
+      "recent_popular_hashtags": [],
+      "trending_hashtags": []
+    },
+    "top_10_effects_used": [],
+    "top_10_music_titles_used": [
+      "Love Language by SZA",
+      "Manchild by Sabrina Carpenter",
+      "Crybaby by SZA",
+      "Diamond Boy (DTM) by SZA",
+      "BMF by SZA",
+      "All Star by Smash Mouth",
+      "Let It All Work Out by lil wayne's intern",
+      "luther by Kendrick Lamar & SZA",
+      "Shake Dat Ass (Twerk Song) by BossMan Dlow",
+      "original sound - SZA by SZA"
+    ],
+    "top_15_hashtags_used": [],
+    "video_length_analysis_seconds": {
+      "average_duration": 36.54,
+      "longest_duration": 90.88,
+      "optimal_duration_range": "22.7s - 90.9s (Avg: 40.8s)",
+      "shortest_duration": 15.06
+    }
+  },
+  "key_metrics": {
+    "account_statistics": {
+      "followers_count": 0,
+      "following_count": 0,
+      "total_likes_received_on_all_videos": 1409163
+    },
+    "average_performance_per_video": {
+      "avg_comments": 1492,
+      "avg_favorites": 6843,
+      "avg_likes": 128136,
+      "avg_shares": 2110,
+      "avg_views": 1448564
+    },
+    "engagement_ratios": {
+      "comment_to_view_ratio": "0.103%",
+      "engagement_rate_per_follower": {
+        "explanation": "Average engagements per video as % of total followers",
+        "value": "0.000%"
+      },
+      "engagement_rate_per_view": {
+        "explanation": "Total engagements as % of total views",
+        "value": "9.567%"
+      },
+      "favorite_to_view_ratio": "0.472%",
+      "like_to_view_ratio": "8.85%",
+      "share_to_view_ratio": "0.146%"
+    },
+    "performance_summary_across_analyzed_videos": {
+      "total_comments": 16417,
+      "total_favorites": 75283,
+      "total_likes": 1409501,
+      "total_shares": 23213,
+      "total_videos_analyzed": 11,
+      "total_views": 15934210
+    }
+  },
+  "profile_summary": {
+    "is_private_account": "No",
+    "nickname": "SZA",
+    "signature": "Big Rigatoni + @NotBeauty Founder",
+    "username": "sza"
+  },
+  "report_generated_utc": "Mon, 08 Dec 2025 11:41:18 GMT",
+  "shadow_ban_risk_assessment": {
+    "explanation": "Multi-factor analysis comparing recent vs historical performance",
+    "result": {
+      "assessment": "Insufficient Data",
+      "confidence_level": "Very Low",
+      "detailed_metrics": {},
+      "probability_percentage": "0%",
+      "reasoning": "Not enough videos to perform reliable analysis (at least 15 videos required)"
+    }
+  },
+  "top_performing_videos_snapshot": {
+    "by_comments": [
+      {
+        "created_date": "2025-11-08",
+        "description": "IN HONOR OF MY BDAY NOTBEAUTY.COM WILL BE PERMANENTLY OPEN...",
+        "engagement_rate": "18.841%",
+        "value": 3779,
+        "video_id": "7570465921991576863",
+        "video_url": "https://www.tiktok.com/@sza/video/7570465921991576863"
+      },
+      {
+        "created_date": "2025-06-23",
+        "description": "BROUGHT MY BESTIE NOVA TO THE KIDS CHOICE AWARDS !!",
+        "engagement_rate": "8.051%",
+        "value": 2035,
+        "video_id": "7518984328630504734",
+        "video_url": "https://www.tiktok.com/@sza/video/7518984328630504734"
+      },
+      {
+        "created_date": "2025-04-30",
+        "description": "TEXAS YALL HAD SO MUCH ENERGY IT WAS AN HONORRR...",
+        "engagement_rate": "6.575%",
+        "value": 1671,
+        "video_id": "7499209051524386078",
+        "video_url": "https://www.tiktok.com/@sza/video/7499209051524386078"
+      },
+      {
+        "created_date": "2025-05-10",
+        "description": "THANK YOU KENDRICK FOR COMING TO YESTERDAY'S @NotBeauty POP UP !!!!",
+        "engagement_rate": "8.943%",
+        "value": 1659,
+        "video_id": "7502954579814845726",
+        "video_url": "https://www.tiktok.com/@sza/video/7502954579814845726"
+      },
+      {
+        "created_date": "2025-10-29",
+        "description": "GLOSS RE UP IS LIVE NOW ! HEAD TO NOTBEAUTY.COM!!",
+        "engagement_rate": "9.954%",
+        "value": 1425,
+        "video_id": "7566791957788331277",
+        "video_url": "https://www.tiktok.com/@sza/video/7566791957788331277"
+      }
+    ],
+    "by_likes": [
+      {
+        "created_date": "2025-11-22",
+        "description": "It's Cuffin Season @Sabrina Carpenter ❤️",
+        "engagement_rate": "18.435%",
+        "value": 365357,
+        "video_id": "7575427225491623223",
+        "video_url": "https://www.tiktok.com/@sza/video/7575427225491623223"
+      },
+      {
+        "created_date": "2025-05-10",
+        "description": "THANK YOU KENDRICK FOR COMING...",
+        "engagement_rate": "8.943%",
+        "value": 213505,
+        "video_id": "7502954579814845726",
+        "video_url": "https://www.tiktok.com/@sza/video/7502954579814845726"
+      },
+      {
+        "created_date": "2025-11-22",
+        "description": "❤️",
+        "engagement_rate": "21.192%",
+        "value": 147298,
+        "video_id": "7575442692885253389",
+        "video_url": "https://www.tiktok.com/@sza/video/7575442692885253389"
+      },
+      {
+        "created_date": "2025-06-23",
+        "description": "BROUGHT MY BESTIE NOVA...",
+        "engagement_rate": "8.051%",
+        "value": 125188,
+        "video_id": "7518984328630504734",
+        "video_url": "https://www.tiktok.com/@sza/video/7518984328630504734"
+      },
+      {
+        "created_date": "2025-05-11",
+        "description": "To the trash n beyond for camp ❤️",
+        "engagement_rate": "4.807%",
+        "value": 121575,
+        "video_id": "7503248771698920734",
+        "video_url": "https://www.tiktok.com/@sza/video/7503248771698920734"
+      }
+    ],
+    "by_shares": [
+      {
+        "created_date": "2025-11-22",
+        "description": "It's Cuffin Season...",
+        "engagement_rate": "18.435%",
+        "value": 8627,
+        "video_id": "7575427225491623223"
+      },
+      {
+        "created_date": "2025-05-10",
+        "engagement_rate": "8.943%",
+        "value": 4356,
+        "video_id": "7502954579814845726"
+      },
+      {
+        "created_date": "2025-11-22",
+        "engagement_rate": "21.192%",
+        "value": 2345,
+        "video_id": "7575442692885253389"
+      },
+      {
+        "created_date": "2025-11-08",
+        "engagement_rate": "18.841%",
+        "value": 2143,
+        "video_id": "7570465921991576863"
+      },
+      {
+        "created_date": "2025-04-25",
+        "engagement_rate": "7.459%",
+        "value": 1174,
+        "video_id": "7497297936557067551"
+      }
+    ],
+    "by_views": [
+      {
+        "created_date": "2025-05-11",
+        "description": "To the trash n beyond for camp...",
+        "engagement_rate": "4.807%",
+        "value": 2728175,
+        "video_id": "7503248771698920734"
+      },
+      {
+        "created_date": "2025-05-10",
+        "engagement_rate": "8.943%",
+        "value": 2587518,
+        "video_id": "7502954579814845726"
+      },
+      {
+        "created_date": "2025-11-22",
+        "engagement_rate": "18.435%",
+        "value": 2113150,
+        "video_id": "7575427225491623223"
+      },
+      {
+        "created_date": "2025-04-30",
+        "engagement_rate": "6.575%",
+        "value": 1843844,
+        "video_id": "7499209051524386078"
+      },
+      {
+        "created_date": "2025-06-23",
+        "engagement_rate": "8.051%",
+        "value": 1703900,
+        "video_id": "7518984328630504734"
+      }
+    ]
+  },
+  "viral_potential_analysis": {
+    "explanation": "Comprehensive analysis of viral characteristics, engagement quality, growth trends",
+    "result": {
+      "assessment": "Exceptional",
+      "best_performing_video": {
+        "engagement_rate": "8.943%",
+        "performance_score": "3050320",
+        "video_id": "7502954579814845726",
+        "views": 2587518
+      },
+      "factors": [
+        "🔥 Excellent viral hit rate: 100.0% of videos exceed 100K views",
+        "🔥 Recent viral momentum: 11 of last 11 videos exceeded 100K views",
+        "⭐ Strong engagement on top content: 9.36% average",
+        "🎯 Consistent high performance: 100.0% of videos exceed 20K views"
+      ],
+      "high_performing_videos_50k_plus": 11,
+      "score": 90,
+      "viral_videos_count": 11
+    }
+  },
+  "website": "omar-thing.site"
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stories -->
+          <div class="endpoint" id="ep-stories">
+            <div class="endpoint-header" onclick="toggleEndpoint('ep-stories')">
+              <div class="endpoint-left">
+                <div class="endpoint-icon premium"><i class="fas fa-circle-play"></i></div>
+                <div>
+                  <div class="endpoint-title">
+                    Stories
+                    <span class="badge badge-lifetime">lifetime only</span>
+                  </div>
+                  <div class="endpoint-desc">active stories with direct media URLs</div>
+                </div>
+              </div>
+              <i class="fas fa-chevron-down endpoint-toggle"></i>
+            </div>
+            <div class="endpoint-content">
+              <div class="endpoint-tags">
+                <span>video/image URLs</span>
+                <span>view count</span>
+                <span>like count</span>
+                <span>expiry time</span>
+              </div>
+              <div class="code-block">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&username=</span><span class="value">user123</span><span class="param">&type=</span><span class="value">stories</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 see example response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "status": "success",
+  "metadata": {
+    "username": "user123",
+    "user_id": "7234567890",
+    "total_stories": 3,
+    "fetch_time_seconds": 1.2,
+    "fetched_at": "2025-01-13T15:30:45Z"
+  },
+  "stories": [
+    {
+      "url": "https://v16-webapp.tiktok.com/...",
+      "type": "video",
+      "aweme_id": "7450123456789012345",
+      "created_at": "2025-01-13T10:15:30",
+      "expires_at": "2025-01-14T10:15:30",
+      "like_count": 1250,
+      "play_count": 15400
+    },
+    {
+      "url": "https://p16-sign-sg.tiktokcdn.com/...",
+      "type": "image",
+      "aweme_id": "7450987654321098765",
+      "created_at": "2025-01-13T08:45:12",
+      "expires_at": "2025-01-14T08:45:12",
+      "like_count": 890,
+      "play_count": 8200
+    }
+  ]
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Domain/Phone Info - NEW ENDPOINT -->
+          <div class="endpoint" id="ep-domain">
+            <div class="endpoint-header" onclick="toggleEndpoint('ep-domain')">
+              <div class="endpoint-left">
+                <div class="endpoint-icon premium"><i class="fas fa-at"></i></div>
+                <div>
+                  <div class="endpoint-title">
+                    Domain & Phone Info
+                    <span class="badge badge-lifetime">lifetime only</span>
+                  </div>
+                  <div class="endpoint-desc">get email domain and phone country code</div>
+                </div>
+              </div>
+              <i class="fas fa-chevron-down endpoint-toggle"></i>
+            </div>
+            <div class="endpoint-content">
+              <div class="endpoint-tags">
+                <span>email domain</span>
+                <span>phone country code</span>
+                <span>quick lookup</span>
+              </div>
+              <div class="code-block">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&type=</span><span class="value">domain</span><span class="param">&username=</span><span class="value">girlandgallery</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 see example response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "email_domain": "gmail.com",
+  "phone_code": "+44",
+  "result": "gmail.com | +44",
+  "status": "success",
+  "username": "girlandgallery"
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Following -->
+          <div class="endpoint" id="ep-following">
+            <div class="endpoint-header" onclick="toggleEndpoint('ep-following')">
+              <div class="endpoint-left">
+                <div class="endpoint-icon premium"><i class="fas fa-users"></i></div>
+                <div>
+                  <div class="endpoint-title">
+                    Following List
+                    <span class="badge badge-lifetime">lifetime only</span>
+                  </div>
+                  <div class="endpoint-desc">export following list with details</div>
+                </div>
+              </div>
+              <i class="fas fa-chevron-down endpoint-toggle"></i>
+            </div>
+            <div class="endpoint-content">
+              <div class="endpoint-tags">
+                <span>username & ID</span>
+                <span>follower count</span>
+                <span>verified status</span>
+                <span>custom limit</span>
+              </div>
+              <div class="code-block">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&username=</span><span class="value">tiktok</span><span class="param">&type=</span><span class="value">following</span><span class="param">&limit=</span><span class="value">100</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <p class="endpoint-note">use <code>limit=full</code> to export all following</p>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 see example response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "status": "success",
+  "metadata": {
+    "username": "tiktok",
+    "user_id": "107955",
+    "total_fetched": 6,
+    "requested_limit": "100",
+    "fetch_time_seconds": 2.45
+  },
+  "followings": [
+    {
+      "uid": "6974208082607481862",
+      "sec_uid": "MS4wLjABAAAA5Af-wldUVfPZ...",
+      "username": "tiktokcanada",
+      "nickname": "TikTok Canada",
+      "signature": "Welcome to TikTok Canada",
+      "avatar_larger": "https://p16-sign-va.tiktokcdn.com/...",
+      "follower_count": 425000,
+      "following_count": 48,
+      "total_favorited": 2700000,
+      "aweme_count": 352,
+      "verified": true,
+      "is_private": false,
+      "region": "CA",
+      "profile_deep_link": "https://www.tiktok.com/@tiktokcanada"
+    }
+  ]
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comments -->
+          <div class="endpoint" id="ep-comments">
+            <div class="endpoint-header" onclick="toggleEndpoint('ep-comments')">
+              <div class="endpoint-left">
+                <div class="endpoint-icon premium"><i class="fas fa-comments"></i></div>
+                <div>
+                  <div class="endpoint-title">
+                    Video Comments
+                    <span class="badge badge-lifetime">lifetime only</span>
+                  </div>
+                  <div class="endpoint-desc">fetch all comments with optional filtering</div>
+                </div>
+              </div>
+              <i class="fas fa-chevron-down endpoint-toggle"></i>
+            </div>
+            <div class="endpoint-content">
+              <div class="endpoint-tags">
+                <span>all comments</span>
+                <span>filter by user</span>
+                <span>video ID or URL</span>
+              </div>
+              <div class="code-block">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&type=</span><span class="value">comments</span><span class="param">&video_url=</span><span class="value">https://vt.tiktok.com/ZSyjwpsm5/</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <p class="endpoint-note">add <code>&username=khaby.lame</code> to filter by specific user</p>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 see example response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "status": "success",
+  "video_id": "7569250524109851918",
+  "total_scanned": 3538,
+  "total_comments": 3538,
+  "fetch_time_seconds": 59.57,
+  "fetched_at": "2025-01-13T18:45:22Z",
+  "comments": [
+    {
+      "username": "lastseenbackpacking",
+      "comment": "😂😂😂"
+    }
+  ]
+}</pre>
+                </div>
+              </div>
+              <p style="color: var(--text-softer); margin: 15px 0 0 0; font-size: 0.8rem;">
+                **With username filter:**
+              </p>
+              <div class="code-block" style="margin-top: 8px;">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&type=</span><span class="value">comments</span><span class="param">&video_url=</span><span class="value">https://vt.tiktok.com/ZSyjwpsm5/</span><span class="param">&username=</span><span class="value">khaby.lame</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 see filtered response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "status": "success",
+  "video_id": "7569250524109851918",
+  "total_scanned": 3538,
+  "filter_username": "khaby.lame",
+  "matching_comments": 5,
+  "comments": [
+    {
+      "username": "khaby.lame",
+      "comment": "Thanks!"
+    }
+  ]
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Account Info -->
+          <div class="endpoint" id="ep-account">
+            <div class="endpoint-header" onclick="toggleEndpoint('ep-account')">
+              <div class="endpoint-left">
+                <div class="endpoint-icon premium"><i class="fas fa-shield-halved"></i></div>
+                <div>
+                  <div class="endpoint-title">
+                    Account Security Info
+                    <span class="badge badge-lifetime">lifetime only</span>
+                  </div>
+                  <div class="endpoint-desc">linked platforms, email/mobile status</div>
+                </div>
+              </div>
+              <i class="fas fa-chevron-down endpoint-toggle"></i>
+            </div>
+            <div class="endpoint-content">
+              <div class="endpoint-tags">
+                <span>Google/Apple linked</span>
+                <span>email verified</span>
+                <span>mobile verified</span>
+                <span>password/passkey</span>
+              </div>
+              <div class="code-block">
+                <code><span class="url">https://api.omar-thing.site/</span><span class="param">?key=</span><span class="value">YOUR_KEY</span><span class="param">&type=</span><span class="value">account_info</span><span class="param">&username=</span><span class="value">tiktok</span></code>
+                <button class="copy-btn" onclick="copyCode(this)">copy</button>
+              </div>
+              <p class="endpoint-note">note: may take up to 20s. no response means data unavailable.</p>
+              <span class="response-toggle" onclick="toggleResponse(this)">📋 see example response</span>
+              <div class="response-content">
+                <div class="response-block">
+                  <pre>{
+  "account_info": {
+    "has_email": "Yes",
+    "has_mobile": "No",
+    "has_oauth": "Yes",
+    "has_passkey": "No",
+    "has_password": "No",
+    "platform": "Google"
+  },
+  "metadata": {
+    "fetch_time_seconds": 5.51,
+    "fetched_at": "2025-11-12T17:44:59.289110Z",
+    "username": "tiktok"
+  },
+  "status": "success"
+}</pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Rules -->
+    <section>
+      <div class="container">
+        <div class="section-label">rules & limits</div>
+        
+        <div class="rules-list">
+          <div class="rule-item">
+            <i class="fas fa-gauge-high"></i>
+            <p><strong>User Info Rate Limit:</strong> 70 req/min, 3k req/day (lifetime: 90 req/min 20k req/day). Need more? <a href="https://t.me/f1ifb2" target="_blank">Contact me</a>.</p>
+          </div>
+          <div class="rule-item">
+            <i class="fas fa-chart-bar"></i>
+            <p><strong>Full Analysis Rate Limit:</strong> 500 requests per day.</p>
+          </div>
+          <div class="rule-item">
+            <i class="fas fa-star"></i>
+            <p><strong>Advanced Endpoints (Lifetime Only):</strong> 30 req/min, 1000 req/day for Following, Stories, Comments, and Account Links.</p>
+          </div>
+          <div class="rule-item">
+            <i class="fas fa-infinity"></i>
+            <p><strong>Unlimited Requests:</strong> Every key has unlimited total requests by default.</p>
+          </div>
+          <div class="rule-item">
+            <i class="fas fa-user-lock"></i>
+            <p><strong>No Key Sharing:</strong> Sharing your API key will result in permanent ban.</p>
+          </div>
+          <div class="rule-item">
+            <i class="fas fa-ban"></i>
+            <p><strong>No Refunds:</strong> All sales are final, except in specific cases.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How to Purchase -->
+    <section>
+      <div class="container">
+        <div class="section-label">how to purchase</div>
+        
+        <div class="info-grid">
+          <div class="info-card">
+            <i class="fas fa-hand-pointer"></i>
+            <h4>1. choose plan</h4>
+            <p>select your desired plan above and click the purchase button.</p>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-credit-card"></i>
+            <h4>2. pay via ko-fi</h4>
+            <p>all payments processed securely through Ko-fi.</p>
+          </div>
+          <div class="info-card">
+            <i class="fas fa-key"></i>
+            <h4>3. get your key</h4>
+            <p>After completing the purchase, several contact options will appear for you to reach us and receive your key.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  <!-- FAQ -->
+    <section>
+      <div class="container">
+        <div class="section-label">frequently asked questions</div>
+        
+        <div class="faq-list">
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span>How do I receive my API key?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>After payment, you'll see multiple ways to contact us. Reach out and you'll receive your key within 24 hours maximum.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span>Are refunds available?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>Unfortunately no, except in specific cases at our discretion.</p>
+            </div>
+          </div>
+          
+          <div class="faq-item">
+            <div class="faq-question" onclick="toggleFaq(this)">
+              <span>What happens if I exceed the rate limit?</span>
+              <i class="fas fa-chevron-down"></i>
+            </div>
+            <div class="faq-answer">
+              <p>If you exceed the per-minute rate limit, you'll be automatically blocked for 3 hours. The daily limit is more flexible, but don't exceed it by more than 5,000 requests.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>
+        <a href="index.html">tools</a>
+        <a href="terms.html">terms</a>
+        <a href="privacy.html">privacy</a>
+        <a href="https://t.me/f1ifb2" target="_blank">telegram</a>
+      </p>
+      <p style="margin-top: 12px;">made with ♥ by jamie</p>
+    </div>
+  </footer>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+    // Theme toggle
+    function toggleTheme() {
+      const html = document.documentElement;
+      const btn = document.getElementById('themeToggle');
+      const isLight = html.getAttribute('data-theme') === 'light';
+      
+      if (isLight) {
+        html.removeAttribute('data-theme');
+        btn.innerHTML = '<i class="fas fa-sun"></i>';
+        btn.classList.remove('active');
+        localStorage.setItem('theme', 'dark');
+      } else {
+        html.setAttribute('data-theme', 'light');
+        btn.innerHTML = '<i class="fas fa-moon"></i>';
+        btn.classList.add('active');
+        localStorage.setItem('theme', 'light');
+      }
+    }
+
+    // Font size toggle
+    function toggleFont() {
+      const html = document.documentElement;
+      const btn = document.getElementById('fontToggle');
+      
+      html.classList.toggle('font-large');
+      btn.classList.toggle('active');
+      localStorage.setItem('fontLarge', html.classList.contains('font-large'));
+    }
+
+    // Load saved preferences
+    (function() {
+      const savedTheme = localStorage.getItem('theme');
+      const savedFont = localStorage.getItem('fontLarge');
+      
+      if (savedTheme === 'light') {
+        document.documentElement.setAttribute('data-theme', 'light');
+        setTimeout(() => {
+          const btn = document.getElementById('themeToggle');
+          if (btn) {
+            btn.innerHTML = '<i class="fas fa-moon"></i>';
+            btn.classList.add('active');
+          }
+        }, 0);
+      }
+      
+      if (savedFont === 'true') {
+        document.documentElement.classList.add('font-large');
+        setTimeout(() => {
+          const btn = document.getElementById('fontToggle');
+          if (btn) btn.classList.add('active');
+        }, 0);
+      }
+    })();
+
+    function toggleEndpoint(id) {
+      document.getElementById(id).classList.toggle('expanded');
+    }
+
+    function toggleResponse(el) {
+      el.classList.toggle('active');
+    }
+
+    function toggleFaq(el) {
+      el.parentElement.classList.toggle('active');
+    }
+
+    function copyCode(btn) {
+      const code = btn.parentElement.querySelector('code').innerText;
+      navigator.clipboard.writeText(code).then(() => {
+        btn.innerText = 'copied!';
+        setTimeout(() => { btn.innerText = 'copy'; }, 2000);
+      });
+    }
+  </script>
+
+<!-- Cloudflare Pages Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "1939e3bb2493424c9dad96590f1d8949"}'></script><!-- Cloudflare Pages Analytics --></body>
+</html>
+
