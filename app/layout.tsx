@@ -19,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${firaCode.variable} bg-[#050505] text-[#00ff41] antialiased selection:bg-[#00ff41] selection:text-black`}
         suppressHydrationWarning
