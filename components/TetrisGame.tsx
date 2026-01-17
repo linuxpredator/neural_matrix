@@ -182,6 +182,7 @@ function useTetris() {
 
         const newBoard = board.map(row => [...row]);
 
+        // Add current piece to board
         for (let y = 0; y < currentPiece.length; y++) {
             for (let x = 0; x < currentPiece[y].length; x++) {
                 if (currentPiece[y][x] !== 0) {
@@ -194,7 +195,7 @@ function useTetris() {
             }
         }
 
-        // Check for lines to clear
+        // Check for completed lines
         const rowsToClear: number[] = [];
         for (let y = 0; y < BOARD_HEIGHT; y++) {
             if (newBoard[y].every(cell => cell !== 0)) {
@@ -202,30 +203,38 @@ function useTetris() {
             }
         }
 
+        // Always update board first to show locked piece
+        setBoard(newBoard);
+
         if (rowsToClear.length > 0) {
-            // Has lines to clear - show animation then update board
-            setBoard(newBoard);
+            // Show clearing animation
             setClearedRows(rowsToClear);
 
+            // After animation, drop the blocks
             setTimeout(() => {
-                // Remove cleared rows and add empty ones at top
-                const boardAfterClear = newBoard.filter((_, i) => !rowsToClear.includes(i));
-                const clearedLines = rowsToClear.length;
-                const emptyRows = Array(clearedLines)
+                // Remove cleared rows
+                const remainingRows = newBoard.filter((_, index) => !rowsToClear.includes(index));
+
+                // Create empty rows at top
+                const emptyRows = Array(rowsToClear.length)
                     .fill(null)
                     .map(() => Array(BOARD_WIDTH).fill(0));
 
-                setBoard([...emptyRows, ...boardAfterClear]);
-                setLines(prev => prev + clearedLines);
-                setScore(prev => prev + clearedLines * 100 * level);
+                // Update board: empty rows at top + remaining rows drop down
+                setBoard([...emptyRows, ...remainingRows]);
+
+                // Update stats
+                setLines(prev => prev + rowsToClear.length);
+                setScore(prev => prev + rowsToClear.length * 100 * level);
                 setClearedRows([]);
 
-                // Create new piece after clearing is done
-                createNewPiece();
+                // Small delay before creating new piece
+                setTimeout(() => {
+                    createNewPiece();
+                }, 50);
             }, 300);
         } else {
-            // No lines to clear - just update board and create new piece
-            setBoard(newBoard);
+            // No lines to clear - create new piece immediately
             createNewPiece();
         }
     }, [currentPiece, position, board, currentType, level, createNewPiece]);
