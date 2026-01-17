@@ -15,6 +15,8 @@ export default function TikTokUserFinder() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState("");
     const [result, setResult] = useState<any>(null);
+    const [countryDetection, setCountryDetection] = useState<any>(null);
+    const [isDetectingCountry, setIsDetectingCountry] = useState(false);
 
     const handleSearch = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -32,7 +34,7 @@ export default function TikTokUserFinder() {
                 throw new Error(data.error || "Failed to fetch user data");
             }
 
-            setResult({
+            const profileData = {
                 username: data.username,
                 nickname: data.nickname,
                 id: data.id,
@@ -52,7 +54,39 @@ export default function TikTokUserFinder() {
                 createdAt: data.createdAt,
                 hasStories: data.hasStories,
                 nicknameEdited: "Unknown"
-            });
+            };
+            setResult(profileData);
+
+            // Run enhanced country detection in background
+            setIsDetectingCountry(true);
+            try {
+                const detectionResponse = await fetch('/api/tiktok/detect-country', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        profile: {
+                            username: data.username,
+                            nickname: data.nickname,
+                            bio: data.signature,
+                            signature: data.signature,
+                            region: data.region,
+                            language: data.language,
+                            id: data.id,
+                        }
+                    }),
+                });
+
+                if (detectionResponse.ok) {
+                    const detectionData = await detectionResponse.json();
+                    setCountryDetection(detectionData.data);
+                    console.log('[Country Detection]:', detectionData.data);
+                }
+            } catch (detectionError) {
+                console.error('[Country Detection Error]:', detectionError);
+                // Don't block UI if detection fails
+            } finally {
+                setIsDetectingCountry(false);
+            }
         } catch (err: any) {
             console.error(err);
             setError(err.message || "An unexpected error occurred.");
@@ -271,17 +305,55 @@ export default function TikTokUserFinder() {
                                     </div>
 
                                     <div className="flex flex-wrap justify-center md:justify-start gap-2">
-                                        {/* Region Badge */}
+                                        {/* Enhanced Country Badge with Detection */}
                                         {(() => {
-                                            const { name, flag } = getLocationInfo(result.region);
+                                            // Use enhanced detection if available, fallback to basic region
+                                            const displayCountry = countryDetection?.country || result.region;
+                                            const displayName = countryDetection?.countryName || getLocationInfo(result.region).name;
+                                            const displayFlag = getLocationInfo(displayCountry).flag;
+                                            const confidence = countryDetection?.confidence || result.region_confidence || 0;
+                                            const isLowConfidence = confidence < 0.6;
+                                            const isEnhanced = !!countryDetection;
 
                                             return (
                                                 <div className="group/region relative cursor-help">
-                                                    <span className="bg-matrix-green/10 border border-matrix-green/50 px-3 py-1 text-xs font-bold text-matrix-green flex items-center gap-2 uppercase">
-                                                        <span className="text-base leading-none">{flag}</span> {name}
+                                                    <span className={`px-3 py-1 text-xs font-bold flex items-center gap-2 uppercase border ${isLowConfidence
+                                                            ? 'bg-amber-900/20 border-amber-500/50 text-amber-400'
+                                                            : isEnhanced
+                                                                ? 'bg-matrix-green/20 border-matrix-green text-matrix-green'
+                                                                : 'bg-matrix-green/10 border-matrix-green/50 text-matrix-green'
+                                                        }`}>
+                                                        <span className="text-base leading-none">{displayFlag}</span>
+                                                        {displayName}
+                                                        {isEnhanced && (
+                                                            <span className="text-[8px] bg-matrix-green/30 px-1 py-0.5 rounded">AI</span>
+                                                        )}
+                                                        {isLowConfidence && (
+                                                            <AlertCircle size={12} className="text-amber-400" />
+                                                        )}
                                                     </span>
-                                                    <div className="opacity-0 group-hover/region:opacity-100 transition-opacity absolute bottom-full left-0 mb-2 px-2 py-1 bg-black border border-matrix-green text-[10px] text-matrix-green whitespace-nowrap z-50 pointer-events-none">
-                                                        CONFIDENCE: {(result.region_confidence * 100).toFixed(0)}% ({result.region_method})
+
+                                                    {/* Enhanced Tooltip */}
+                                                    <div className="opacity-0 group-hover/region:opacity-100 transition-opacity absolute bottom-full left-0 mb-2 p-3 bg-black border border-matrix-green text-[10px] text-matrix-green whitespace-nowrap z-50 pointer-events-none min-w-[200px]">
+                                                        <div className="font-bold mb-1">DETECTION DETAILS</div>
+                                                        <div>CONFIDENCE: {(confidence * 100).toFixed(1)}%</div>
+                                                        {isEnhanced && (
+                                                            <>
+                                                                <div>METHODS: {countryDetection.methodCount}</div>
+                                                                <div className="text-gray-400 mt-1">
+                                                                    {countryDetection.methods.join(', ')}
+                                                                </div>
+                                                                <div className="text-matrix-green/70 mt-1">
+                                                                    +{(countryDetection.methodBonus * 100).toFixed(0)}% diversity bonus
+                                                                </div>
+                                                            </>
+                                                        )}
+                                                        {!isEnhanced && (
+                                                            <div>METHOD: {result.region_method || 'BASIC'}</div>
+                                                        )}
+                                                        {isLowConfidence && (
+                                                            <div className="text-amber-400 mt-1">⚠️ Low confidence</div>
+                                                        )}
                                                     </div>
                                                 </div>
                                             );
@@ -290,6 +362,13 @@ export default function TikTokUserFinder() {
                                         <span className="bg-zinc-800 border border-zinc-700 px-3 py-1 text-xs text-gray-400 flex items-center gap-2 uppercase font-mono">
                                             🗣️ {result.language?.toUpperCase() || "N/A"}
                                         </span>
+
+                                        {/* Detection Loading Indicator */}
+                                        {isDetectingCountry && (
+                                            <span className="bg-blue-900/20 border border-blue-500/50 px-3 py-1 text-xs text-blue-400 flex items-center gap-2">
+                                                <Loader2 size={12} className="animate-spin" /> Analyzing...
+                                            </span>
+                                        )}
                                     </div>
 
                                     <div className="border border-matrix-green/30 p-4 bg-black/40 text-sm text-gray-300 font-mono italic relative">
