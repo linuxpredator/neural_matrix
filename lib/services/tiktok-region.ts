@@ -3,12 +3,34 @@ import { TikTokUserRegion, RegionDetectionResult } from "@/lib/types/tiktok";
 
 /**
  * Service to detect TikTok Account Region using Advanced CDN Analysis
- * Implements "The Omar Method" + Deep Pattern Scanning
+ * Implements "The Omar Method" + Deep Pattern Scanning + Language Inference
  */
+
+// Language code to likely region mapping
+const LANGUAGE_TO_REGION_MAP: Record<string, string> = {
+    'ms': 'MY',  // Malay → Malaysia
+    'id': 'ID',  // Indonesian → Indonesia
+    'vi': 'VN',  // Vietnamese → Vietnam
+    'th': 'TH',  // Thai → Thailand
+    'fil': 'PH', // Filipino → Philippines
+    'tl': 'PH',  // Tagalog → Philippines
+    'zh-Hant': 'TW', // Traditional Chinese → Taiwan
+    'zh-Hans': 'CN',  // Simplified Chinese → China
+    'ko': 'KR',  // Korean → South Korea
+    'ja': 'JP',  // Japanese → Japan
+    'ar': 'SA',  // Arabic → Saudi Arabia (common)
+    'pt': 'BR',  // Portuguese → Brazil (common)
+    'es': 'MX',  // Spanish → Mexico (common, could also be ES)
+    'fr': 'FR',  // French → France
+    'de': 'DE',  // German → Germany
+    'it': 'IT',  // Italian → Italy
+    'ru': 'RU',  // Russian → Russia
+    'tr': 'TR',  // Turkish → Turkey
+};
 
 const USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
 
-export async function detectTikTokRegion(username: string, htmlContext?: string, knownRegion?: string): Promise<RegionDetectionResult> {
+export async function detectTikTokRegion(username: string, htmlContext?: string, knownRegion?: string, language?: string): Promise<RegionDetectionResult> {
     const cleanUsername = username.replace(/^@/, "");
 
     try {
@@ -36,9 +58,11 @@ export async function detectTikTokRegion(username: string, htmlContext?: string,
         }
 
         // --- STRATEGY 1: EXPLICIT METADATA (From Route Parse) ---
-        // We rely on the robustness of the route.ts JSON parser.
+        // Accept any valid 2-letter region code from TikTok's API response
+        // Note: Some accounts may have unexpected/incorrect metadata
 
-        if (knownRegion && knownRegion.length === 2 && knownRegion !== "US") {
+        if (knownRegion && knownRegion.length === 2) {
+            console.log(`[TikTokRegion] Using metadata region: ${knownRegion}`);
             return {
                 username: cleanUsername,
                 region: knownRegion,
@@ -50,7 +74,25 @@ export async function detectTikTokRegion(username: string, htmlContext?: string,
         }
 
         // Removed Regex matching to avoid Viewer Bias (getting 'MY' from app context).
-        // Fallback to CDN Analysis below.
+        // Fallback to Language Inference, then CDN Analysis.
+
+        // --- STRATEGY 2: LANGUAGE CODE INFERENCE (Medium Confidence) ---
+        // Infer region from language code when metadata is missing
+        // Useful for accounts where region field is empty but language is set
+        if (language) {
+            const inferredRegion = LANGUAGE_TO_REGION_MAP[language.toLowerCase()];
+            if (inferredRegion) {
+                console.log(`[TikTokRegion] Inferred ${inferredRegion} from language: ${language}`);
+                return {
+                    username: cleanUsername,
+                    region: inferredRegion,
+                    country_code: inferredRegion,
+                    confidence_score: 0.85,
+                    detection_method: "LANGUAGE_INFERENCE",
+                    success: true
+                };
+            }
+        }
 
         // --- STRATEGY 2: DEEP CDN PATTERN SCANNING (Fallback) ---
         // If metadata is empty/missing, we look at where the content is hosted.

@@ -8,6 +8,7 @@ import MatrixRain from "@/components/MatrixRain";
 import StatusBar from "@/components/StatusBar";
 import Image from "next/image";
 import { getLocationInfo } from "@/lib/locationMapper";
+import { formatAccountCreationDate } from "@/lib/utils/dateFormatter";
 
 export default function TikTokUserFinder() {
     const [username, setUsername] = useState("");
@@ -296,21 +297,39 @@ export default function TikTokUserFinder() {
                                         "{result.signature || "No signature available."}"
                                     </div>
 
-                                    {/* Tech Details with Info Icon */}
-                                    <div className="text-xs text-gray-500 font-mono flex flex-wrap justify-center md:justify-start gap-4 pt-2">
-                                        <div className="flex items-center gap-2">
-                                            <Hash size={12} className="text-matrix-green" />
-                                            ID: <span className="text-gray-300">{result.id}</span>
-                                            <div className="group/info relative">
-                                                <Info size={12} className="hover:text-matrix-green cursor-help" />
-                                                <div className="opacity-0 group-hover/info:opacity-100 transition-opacity absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-3 py-2 bg-[#1a1a1f] border border-gray-700 rounded-lg shadow-xl text-[10px] text-gray-300 w-48 text-center z-50 pointer-events-none">
-                                                    This ID is permanent! Use it to find the account even if the username changes.
+                                    {/* Technical Details Section */}
+                                    <div className="mt-4 p-4 bg-black/30 border border-matrix-green/20 rounded space-y-3">
+                                        <div className="text-[10px] text-matrix-green/60 uppercase tracking-wider font-bold mb-2">TECHNICAL METADATA</div>
+
+                                        <div className="space-y-2 text-xs font-mono">
+                                            {/* User ID */}
+                                            <div className="flex items-start gap-2">
+                                                <Hash size={12} className="text-matrix-green mt-0.5 flex-shrink-0" />
+                                                <div className="flex-grow">
+                                                    <div className="text-gray-400">User ID:</div>
+                                                    <div className="text-gray-300 break-all">{result.id}</div>
+                                                    <div className="text-[10px] text-gray-500 mt-0.5">Permanent identifier - survives username changes</div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div className="flex items-center gap-2">
-                                            <Calendar size={12} className="text-matrix-green" />
-                                            Created: <span className="text-gray-300">{result.createdAt}</span>
+
+                                            {/* SecUID */}
+                                            <div className="flex items-start gap-2">
+                                                <Shield size={12} className="text-matrix-green mt-0.5 flex-shrink-0" />
+                                                <div className="flex-grow">
+                                                    <div className="text-gray-400">SecUID:</div>
+                                                    <div className="text-gray-300 break-all text-[10px]">{result.secUid}</div>
+                                                    <div className="text-[10px] text-gray-500 mt-0.5">Secure User Identifier</div>
+                                                </div>
+                                            </div>
+
+                                            {/* Account Created */}
+                                            <div className="flex items-start gap-2">
+                                                <Calendar size={12} className="text-matrix-green mt-0.5 flex-shrink-0" />
+                                                <div className="flex-grow">
+                                                    <div className="text-gray-400">Account Created:</div>
+                                                    <div className="text-matrix-green font-bold">{formatAccountCreationDate(result.createdAt)}</div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -386,6 +405,27 @@ export default function TikTokUserFinder() {
                     </motion.div>
                 </div>
             )}
+
+            {/* Legal Disclaimer Footer */}
+            <footer className="relative z-10 w-full max-w-4xl mx-auto px-4 py-8 mt-12 border-t border-matrix-green/20">
+                <div className="text-center space-y-3">
+                    <div className="text-[10px] text-matrix-green/60 uppercase tracking-wider font-bold mb-2">
+                        LEGAL DISCLAIMER
+                    </div>
+                    <p className="text-xs text-gray-400 font-mono leading-relaxed">
+                        This tool displays publicly available TikTok profile information only.
+                        <br />
+                        No personal data is collected, stored, or shared beyond the displayed results.
+                    </p>
+                    <p className="text-xs text-gray-500 font-mono">
+                        For educational and analytical purposes only. Please respect TikTok's Terms of Service.
+                    </p>
+                    <div className="flex items-center justify-center gap-2 text-[10px] text-gray-600 mt-4">
+                        <Shield size={10} className="text-matrix-green/40" />
+                        <span>Privacy Respected • Data Not Stored • ToS Compliant</span>
+                    </div>
+                </div>
+            </footer>
         </main>
     );
 }

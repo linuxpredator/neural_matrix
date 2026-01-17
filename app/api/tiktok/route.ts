@@ -2,6 +2,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { load } from "cheerio";
 import { detectTikTokRegion } from "@/lib/services/tiktok-region";
+import { getCachedTikTokProfile, cacheTikTokProfile } from "@/lib/cache/tiktok";
+import { checkRateLimit, getClientIP } from "@/lib/ratelimit";
 
 const PYTHON_SERVICE_URL = "http://127.0.0.1:8000/api/v1/user";
 
@@ -11,6 +13,38 @@ export async function GET(req: NextRequest) {
 
     if (!username) {
         return NextResponse.json({ error: "Username required" }, { status: 400 });
+    }
+
+    // Rate limiting check
+    const clientIP = getClientIP(req.headers);
+    const rateLimitResult = await checkRateLimit(clientIP);
+
+    if (!rateLimitResult.allowed) {
+        return NextResponse.json(
+            {
+                error: "Too many requests. Please try again later.",
+                resetAt: rateLimitResult.resetAt.toISOString()
+            },
+            {
+                status: 429,
+                headers: {
+                    'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+                    'X-RateLimit-Reset': rateLimitResult.resetAt.toISOString(),
+                }
+            }
+        );
+    }
+
+    // Check cache first
+    const cached = await getCachedTikTokProfile(username);
+    if (cached) {
+        console.log(`[Cache HIT] Serving cached profile for @${username}`);
+        return NextResponse.json(cached, {
+            headers: {
+                'X-Cache': 'HIT',
+                'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            }
+        });
     }
 
     // 1. Attempt to fetch from Python Backend (High Precision)
@@ -26,7 +60,7 @@ export async function GET(req: NextRequest) {
                 console.log(`[Proxy] Served from Python Service: ${username}`);
 
                 // Map Python response to our Frontend Schema
-                return NextResponse.json({
+                const profileData = {
                     username: p.username,
                     nickname: p.nickname,
                     avatar: p.avatar,
@@ -43,6 +77,16 @@ export async function GET(req: NextRequest) {
                     region_method: "AUTHENTICATED_API",
                     language: p.language,
                     createdAt: new Date().toISOString() // Placeholder
+                };
+
+                // Cache the result
+                await cacheTikTokProfile(username, profileData as any);
+
+                return NextResponse.json(profileData, {
+                    headers: {
+                        'X-Cache': 'MISS',
+                        'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+                    }
                 });
             }
         }
@@ -178,12 +222,18 @@ async function fallbackScraper(username: string): Promise<NextResponse> {
     const stats = statsData || {};
     const creationTime = new Date(Number((BigInt(user.id) >> 32n).toString()) * 1000).toISOString().split('T')[0];
 
-    const finalRegionData = await detectTikTokRegion(username, html, user.region);
+    // Sanitize region value - TikTok API sometimes doesn't provide region field
+    // When accessed, undefined properties become string "undefined"
+    const actualRegion = (user.region && user.region !== 'undefined') ? user.region : undefined;
+
+    console.log(`[DEBUG] User metadata - original region: "${user.region}", sanitized: "${actualRegion}", language: "${user.language}"`);
+    const finalRegionData = await detectTikTokRegion(username, html, actualRegion, user.language);
     let detectedRegion = finalRegionData.region;
 
     console.log(`[NeuralMatch] Region: ${detectedRegion}, Confidence: ${finalRegionData.confidence_score}, Method: ${finalRegionData.detection_method}`);
 
-    return NextResponse.json({
+    // Build profile data object
+    const profileData = {
         username: user.uniqueId,
         nickname: user.nickname,
         id: user.id,
@@ -206,5 +256,14 @@ async function fallbackScraper(username: string): Promise<NextResponse> {
         openFavorite: user.openFavorite,
         private: user.privateAccount,
         isUnderAge18: user.isUnderAge18,
+    };
+
+    // Cache the result for future requests
+    await cacheTikTokProfile(username, profileData as any);
+
+    return NextResponse.json(profileData, {
+        headers: {
+            'X-Cache': 'MISS'
+        }
     });
 }

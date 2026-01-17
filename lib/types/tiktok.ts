@@ -7,7 +7,7 @@ export interface TikTokUserRegion {
     cached?: boolean; // Debug flag to show if served from cache
 }
 
-export type RegionDetectionMethod = "CDN_ANALYSIS" | "METADATA" | "HEURISTIC" | "FALLBACK" | "FAILED_FETCH" | "ERROR";
+export type RegionDetectionMethod = "CDN_ANALYSIS" | "LANGUAGE_INFERENCE" | "METADATA" | "HEURISTIC" | "FALLBACK" | "FAILED_FETCH" | "ERROR";
 
 export interface RegionDetectionResult extends TikTokUserRegion {
     detection_method: RegionDetectionMethod;
