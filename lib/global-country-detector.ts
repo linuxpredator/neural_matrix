@@ -14,6 +14,22 @@ import {
     type PhoneCodePattern,
 } from '@/lib/data/country-patterns';
 
+// Import enhanced comprehensive patterns
+import {
+    ALL_ENHANCED_LANGUAGE_PATTERNS,
+    type EnhancedLanguagePattern,
+} from '@/lib/data/enhanced-language-patterns';
+
+import {
+    ALL_ENHANCED_LOCATIONS,
+    type EnhancedLocationPattern,
+} from '@/lib/data/expanded-locations';
+
+import {
+    COMPREHENSIVE_PHONE_PATTERNS,
+    type EnhancedPhonePattern,
+} from '@/lib/data/expanded-phone-patterns';
+
 export interface TikTokProfile {
     username: string;
     nickname: string;
@@ -440,12 +456,23 @@ export class GlobalTikTokCountryDetector {
         // Get winner
         const winner = countryResults[0];
 
+        // Build final result with optional warning
+        const result: CountryDetectionResult = {
+            country: winner.country,
+            countryName: winner.countryName,
+            confidence: winner.confidence,
+            signals: winner.signals,
+            methods: winner.methods,
+            methodCount: winner.methodCount,
+            methodBonus: winner.methodBonus,
+        };
+
         // Add warning if confidence is low
         if (winner.confidence < 0.6) {
-            winner.warning = 'Low detection confidence - results may be inaccurate';
+            result.warning = 'Low detection confidence - results may be inaccurate';
         }
 
-        return winner as CountryDetectionResult;
+        return result;
     }
 
     /**
