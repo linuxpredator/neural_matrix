@@ -1,22 +1,16 @@
 import type { Metadata } from "next";
-import { Space_Mono, VT323 } from "next/font/google";
+import { Fira_Code } from "next/font/google";
 import "./globals.css";
 
-const spaceMono = Space_Mono({
-  weight: ["400", "700"],
+const firaCode = Fira_Code({
   subsets: ["latin"],
-  variable: "--font-space-mono",
-});
-
-const vt323 = VT323({
-  weight: "400",
-  subsets: ["latin"],
-  variable: "--font-vt323",
+  variable: "--font-fira-code",
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "SYSTEM_READY: alt_cmd",
-  description: "Minimalist Digital Matrix Portfolio",
+  title: "NEURAL_MATRIX",
+  description: "Architecting digital realities in the void.",
 };
 
 export default function RootLayout({
@@ -25,11 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en">
       <body
-        suppressHydrationWarning
-        className={`${spaceMono.variable} ${vt323.variable} antialiased bg-black text-green-500 selection:bg-green-900 selection:text-green-100 overflow-x-hidden`}
+        className={`${firaCode.variable} bg-[#050505] text-[#00ff41] antialiased selection:bg-[#00ff41] selection:text-black`}
       >
+        {/* Background Grid Layer */}
+        <div className="fixed inset-0 z-[-1] bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
         {children}
       </body>
     </html>
