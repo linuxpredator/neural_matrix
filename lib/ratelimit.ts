@@ -6,7 +6,7 @@ import { cacheIncr, cacheExpire } from '@/lib/redis';
 
 const RATE_LIMIT_PREFIX = 'ratelimit:';
 const RATE_LIMIT_WINDOW = 3600; // 1 hour in seconds
-const MAX_REQUESTS_PER_WINDOW = 10;
+const MAX_REQUESTS_PER_WINDOW = 50; // Increased from 10 to allow for testing
 
 export interface RateLimitResult {
     allowed: boolean;
