@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import { Search, Loader2, AlertCircle, Download, MonitorPlay, Shield, Calendar, User, Globe, Hash, ArrowLeft, Info } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import Navigation from "@/components/Navigation";
 import MatrixRain from "@/components/MatrixRain";
 import StatusBar from "@/components/StatusBar";
 import Image from "next/image";
@@ -159,15 +158,17 @@ export default function TikTokUserFinder() {
                 <ArrowLeft size={16} /> Back to System
             </Link>
 
-            {/* Matrix Rain Background */}
-            <div className="fixed inset-0 z-0 opacity-20 pointer-events-none">
+            {/* Matrix Rain Background with CRT Effects */}
+            <div className="fixed inset-0 z-0 pointer-events-none">
                 <MatrixRain />
             </div>
+            <div className="fixed inset-0 z-50 pointer-events-none scanline-effect opacity-30"></div>
+            <div className="fixed inset-0 z-40 pointer-events-none crt-overlay opacity-20"></div>
 
             <div className="relative z-10 w-full max-w-4xl mx-auto px-4 py-20 flex flex-col gap-8">
 
                 {/* SEKSYEN ATAS: SEARCH BOX */}
-                <section className={`relative w-full border-2 border-matrix-green bg-black/90 backdrop-blur-sm p-6 md:p-8 shadow-[0_0_20px_rgba(0,255,0,0.15)] transition-all duration-500 ${!result ? 'my-auto mt-32' : ''}`}>
+                <section className={`relative w-full border-2 border-matrix-green bg-black/60 backdrop-blur-md p-6 md:p-8 shadow-[0_0_20px_rgba(0,255,0,0.15)] transition-all duration-500 ${!result ? 'my-auto mt-32' : ''}`}>
 
                     {/* Corner Accents - Restored */}
                     <div className="absolute -top-1 -left-1 w-4 h-4 border-t-4 border-l-4 border-matrix-green" />
@@ -221,7 +222,7 @@ export default function TikTokUserFinder() {
                     <motion.section
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
-                        className="w-full border-2 border-matrix-green bg-black/90 backdrop-blur-sm shadow-[0_0_20px_rgba(0,255,0,0.15)] relative"
+                        className="w-full border-2 border-matrix-green bg-black/60 backdrop-blur-md shadow-[0_0_20px_rgba(0,255,0,0.15)] relative"
                     >
                         {/* Corner Accents */}
                         <div className="absolute -top-1 -left-1 w-4 h-4 border-t-4 border-l-4 border-matrix-green z-20" />

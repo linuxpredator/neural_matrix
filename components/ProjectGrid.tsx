@@ -20,15 +20,17 @@ const projects = [
         description: "Cloud-based fintech backtesting platform with real-time equity simulation.",
         tech: ["Next.js", "Recharts", "Fintech"],
         status: "OPERATIONAL",
-        delay: 0.2
+        delay: 0.2,
+        link: "/projek/mql5cloudbacktester"
     },
     {
-        id: "ai-chat-interface",
-        title: "CORTEX_LM",
-        description: "AI conversational interface with neural network visualization.",
-        tech: ["OpenAI", "WebSockets", "Canvas"],
-        status: "PROCESSING",
-        delay: 0.3
+        id: "unionospro",
+        title: "UNION_OS_PRO",
+        description: "Trade union management dashboard for specialized labor compliance.",
+        tech: ["Next.js", "Tailwind", "Dashboard"],
+        status: "COMPLIANT",
+        delay: 0.3,
+        link: "/projek/unionospro"
     },
     {
         id: "crypto-tracker",
