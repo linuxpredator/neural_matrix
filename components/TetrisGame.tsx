@@ -194,12 +194,43 @@ function useTetris() {
             }
         }
 
-        setBoard(newBoard);
-        clearLines(newBoard);
-        createNewPiece();
-    }, [currentPiece, position, board, currentType, createNewPiece]);
+        // Check for lines to clear
+        const rowsToClear: number[] = [];
+        for (let y = 0; y < BOARD_HEIGHT; y++) {
+            if (newBoard[y].every(cell => cell !== 0)) {
+                rowsToClear.push(y);
+            }
+        }
 
-    // Clear completed lines
+        if (rowsToClear.length > 0) {
+            // Has lines to clear - show animation then update board
+            setBoard(newBoard);
+            setClearedRows(rowsToClear);
+
+            setTimeout(() => {
+                // Remove cleared rows and add empty ones at top
+                const boardAfterClear = newBoard.filter((_, i) => !rowsToClear.includes(i));
+                const clearedLines = rowsToClear.length;
+                const emptyRows = Array(clearedLines)
+                    .fill(null)
+                    .map(() => Array(BOARD_WIDTH).fill(0));
+
+                setBoard([...emptyRows, ...boardAfterClear]);
+                setLines(prev => prev + clearedLines);
+                setScore(prev => prev + clearedLines * 100 * level);
+                setClearedRows([]);
+
+                // Create new piece after clearing is done
+                createNewPiece();
+            }, 300);
+        } else {
+            // No lines to clear - just update board and create new piece
+            setBoard(newBoard);
+            createNewPiece();
+        }
+    }, [currentPiece, position, board, currentType, level, createNewPiece]);
+
+    // Clear completed lines (no longer used directly, logic moved to lockPiece)
     const clearLines = useCallback((currentBoard: Board) => {
         const rowsToClear: number[] = [];
 
