@@ -105,10 +105,9 @@ export default function IslamicFalakPage() {
             <div className="max-w-7xl mx-auto mb-4">
                 <Link
                     href="/"
-                    className="inline-flex items-center gap-2 px-4 py-2 bg-black border-2 border-matrix-green/40 text-matrix-green hover:bg-matrix-green/10 hover:border-matrix-green transition-all text-sm"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-matrix-green hover:text-matrix-green/80 transition-all text-sm font-mono"
                 >
-                    <ArrowLeft size={16} />
-                    <span>BACK_TO_SYSTEM</span>
+                    <span>← BACK_TO_SYSTEM</span>
                 </Link>
             </div>
 
