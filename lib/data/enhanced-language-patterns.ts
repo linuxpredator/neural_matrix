@@ -195,7 +195,7 @@ export const JAPANESE_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /[\u3040-\u309F]{2,}/i, countries: ['JP'], confidence: 0.98, description: 'Hiragana script', type: 'script', ageGroup: 'all' },
     { pattern: /[\u30A0-\u30FF]{2,}/i, countries: ['JP'], confidence: 0.98, description: 'Katakana script', type: 'script', ageGroup: 'all' },
     { pattern: /[\u4E00-\u9FAF]{2,}/i, countries: ['JP', 'CN', 'TW'], confidence: 0.75, description: 'Kanji/Hanzi', type: 'script', ageGroup: 'all' },
-    
+
     // Particles & honorifics
     { pattern: /\bdesu\b/i, countries: ['JP'], confidence: 0.90, description: 'Japanese copula', type: 'particle', formality: 'formal' },
     { pattern: /\bmasu\b/i, countries: ['JP'], confidence: 0.90, description: 'Japanese polite verb ending', type: 'particle', formality: 'formal' },
@@ -204,14 +204,14 @@ export const JAPANESE_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /\bsan\b/i, countries: ['JP'], confidence: 0.85, description: 'Japanese honorific', type: 'honorific', formality: 'formal' },
     { pattern: /\bkun\b/i, countries: ['JP'], confidence: 0.80, description: 'Japanese honorific (male)', type: 'honorific', formality: 'neutral' },
     { pattern: /\bchan\b/i, countries: ['JP'], confidence: 0.85, description: 'Japanese honorific (cute)', type: 'honorific', formality: 'informal' },
-    
+
     // Slang
     { pattern: /\bwww+\b/i, countries: ['JP'], confidence: 0.95, description: 'Japanese laughing (warau)', type: 'slang', ageGroup: 'all' },
     { pattern: /\bkawaii\b/i, countries: ['JP'], confidence: 0.90, description: 'Japanese cute', type: 'slang', ageGroup: 'all' },
     { pattern: /\byabai\b/i, countries: ['JP'], confidence: 0.85, description: 'Japanese (dangerous/awesome)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bsugoi\b/i, countries: ['JP'], confidence: 0.85, description: 'Japanese (amazing)', type: 'phrase', formality: 'informal' },
     { pattern: /\bmaji\b/i, countries: ['JP'], confidence: 0.85, description: 'Japanese (seriously)', type: 'slang', ageGroup: 'youth' },
-    
+
     // Common phrases
     { pattern: /\bkonichiwa\b/i, countries: ['JP'], confidence: 0.90, description: 'Japanese hello', type: 'phrase', formality: 'neutral' },
     { pattern: /\barigatou\b/i, countries: ['JP'], confidence: 0.90, description: 'Japanese thank you', type: 'phrase', formality: 'neutral' },
@@ -221,12 +221,12 @@ export const JAPANESE_PATTERNS: EnhancedLanguagePattern[] = [
 export const KOREAN_PATTERNS: EnhancedLanguagePattern[] = [
     // Hangul script
     { pattern: /[\uAC00-\uD7AF]{2,}/i, countries: ['KR'], confidence: 0.98, description: 'Hangul script', type: 'script', ageGroup: 'all' },
-    
+
     // Particles & honorifics
     { pattern: /\bimnida\b/i, countries: ['KR'], confidence: 0.95, description: 'Korean formal ending', type: 'particle', formality: 'formal' },
     { pattern: /\bseumnida\b/i, countries: ['KR'], confidence: 0.95, description: 'Korean formal ending', type: 'particle', formality: 'formal' },
     { pattern: /\byo\b/i, countries: ['KR'], confidence: 0.80, description: 'Korean polite particle', type: 'particle', formality: 'formal' },
-    
+
     // Slang & internet speak
     { pattern: /ㅋㅋ+/i, countries: ['KR'], confidence: 0.95, description: 'Korean laughing (kk)', type: 'slang', ageGroup: 'all' },
     { pattern: /ㅎㅎ+/i, countries: ['KR'], confidence: 0.95, description: 'Korean laughing (hh)', type: 'slang', ageGroup: 'all' },
@@ -234,12 +234,12 @@ export const KOREAN_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /\bdaebak\b/i, countries: ['KR'], confidence: 0.90, description: 'Korean (awesome)', type: 'slang', ageGroup: 'all' },
     { pattern: /\bheol\b/i, countries: ['KR'], confidence: 0.85, description: 'Korean (OMG)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bjjang\b/i, countries: ['KR'], confidence: 0.85, description: 'Korean (best/cool)', type: 'slang', ageGroup: 'youth' },
-    
+
     // Honorifics
     { pattern: /\boppa\b/i, countries: ['KR'], confidence: 0.85, description: 'Korean older brother (girl speaking)', type: 'honorific', formality: 'informal' },
     { pattern: /\bunni\b/i, countries: ['KR'], confidence: 0.85, description: 'Korean older sister (boy speaking)', type: 'honorific', formality: 'informal' },
     { pattern: /\bhyung\b/i, countries: ['KR'], confidence: 0.85, description: 'Korean older brother (boy speaking)', type: 'honorific', formality: 'informal' },
-    
+
     // Common phrases
     { pattern: /\bannyeong\b/i, countries: ['KR'], confidence: 0.90, description: 'Korean hello', type: 'phrase', formality: 'neutral' },
     { pattern: /\bkamsahamnida\b/i, countries: ['KR'], confidence: 0.95, description: 'Korean thank you (formal)', type: 'phrase', formality: 'formal' },
@@ -249,13 +249,13 @@ export const KOREAN_PATTERNS: EnhancedLanguagePattern[] = [
 export const CHINESE_PATTERNS: EnhancedLanguagePattern[] = [
     // Chinese characters (Simplified & Traditional)
     { pattern: /[\u4E00-\u9FFF]{2,}/i, countries: ['CN', 'TW', 'HK'], confidence: 0.85, description: 'Chinese characters', type: 'script', ageGroup: 'all' },
-    
+
     // Mainland slang
     { pattern: /哈哈+/i, countries: ['CN', 'TW', 'HK'], confidence: 0.90, description: 'Chinese laughing', type: 'slang', ageGroup: 'all' },
     { pattern: /\b666+\b/i, countries: ['CN'], confidence: 0.95, description: 'Chinese gaming slang (awesome)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\b999\b/i, countries: ['CN'], confidence: 0.85, description: 'Chinese (long lasting)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\b233+\b/i, countries: ['CN'], confidence: 0.90, description: 'Chinese internet laughing', type: 'slang', ageGroup: 'youth' },
-    
+
     // Common phrases
     { pattern: /你好/i, countries: ['CN', 'TW', 'HK'], confidence: 0.90, description: 'Chinese hello', type: 'phrase', formality: 'neutral' },
     { pattern: /谢谢/i, countries: ['CN', 'TW', 'HK'], confidence: 0.90, description: 'Chinese thank you', type: 'phrase', formality: 'neutral' },
@@ -286,8 +286,8 @@ export const MONGOLIAN_PATTERNS: EnhancedLanguagePattern[] = [
 // INDIA (Hindi + major languages)
 export const INDIAN_PATTERNS: EnhancedLanguagePattern[] = [
     // Devanagari script (Hindi, Marathi, Nepali)
-    { pattern: /[\u0900-\u097F]{3,}/i, countries: ['IN', 'NP'], confidence: 0.95, description: 'Devanagari script', type: 'script', ageGroup: all' },
-    
+    { pattern: /[\u0900-\u097F]{3,}/i, countries: ['IN', 'NP'], confidence: 0.95, description: 'Devanagari script', type: 'script', ageGroup: 'all' },
+
     // Hindi slang & common words
     { pattern: /\byaar\b/i, countries: ['IN'], confidence: 0.90, description: 'Hindi (friend/dude)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bbhai\b/i, countries: ['IN'], confidence: 0.85, description: 'Hindi (brother/bro)', type: 'slang', ageGroup: 'all' },
@@ -297,7 +297,7 @@ export const INDIAN_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /\bnamaste\b/i, countries: ['IN', 'NP'], confidence: 0.95, description: 'Hindi/Nepali greeting', type: 'phrase', formality: 'formal' },
     { pattern: /\bhaan\b/i, countries: ['IN'], confidence: 0.75, description: 'Hindi (yes)', type: 'phrase', formality: 'neutral' },
     { pattern: /\bnahi\b/i, countries: ['IN'], confidence: 0.75, description: 'Hindi (no)', type: 'phrase', formality: 'neutral' },
-    
+
     // South Indian patterns (Tamil, Telugu, Kannada, Malayalam)
     { pattern: /[\u0B80-\u0BFF]{3,}/i, countries: ['IN', 'LK'], confidence: 0.95, description: 'Tamil script', type: 'script', ageGroup: 'all' },
     { pattern: /[\u0C00-\u0C7F]{3,}/i, countries: ['IN'], confidence: 0.95, description: 'Telugu script', type: 'script', ageGroup: 'all' },
@@ -355,7 +355,7 @@ export const SOUTH_ASIAN_PATTERNS: EnhancedLanguagePattern[] = [
 export const ARABIC_PATTERNS: EnhancedLanguagePattern[] = [
     // Arabic script
     { pattern: /[\u0600-\u06FF]{3,}/i, countries: ['SA', 'AE', 'EG', 'JO', 'LB', 'SY', 'IQ', 'YE', 'OM', 'KW', 'BH', 'QA'], confidence: 0.90, description: 'Arabic script', type: 'script', ageGroup: 'all' },
-    
+
     // Common words & slang
     { pattern: /\bhabibi\b/i, countries: ['SA', 'AE', 'EG', 'JO', 'LB'], confidence: 0.90, description: 'Arabic (my dear)', type: 'slang', ageGroup: 'all' },
     { pattern: /\byalla\b/i, countries: ['SA', 'AE', 'EG'], confidence: 0.85, description: 'Arabic (let\'s go)', type: 'slang', ageGroup: 'all' },
@@ -363,7 +363,7 @@ export const ARABIC_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /\bmashallah\b/i, countries: ['SA', 'AE', 'EG'], confidence: 0.85, description: 'Arabic (God has willed)', type: 'phrase', formality: 'neutral' },
     { pattern: /\balhamdulillah\b/i, countries: ['SA', 'AE', 'EG'], confidence: 0.85, description: 'Arabic (praise be to God)', type: 'phrase', formality: 'neutral' },
     { pattern: /\bshukran\b/i, countries: ['SA', 'AE', 'EG'], confidence: 0.85, description: 'Arabic (thank you)', type: 'phrase', formality: 'neutral' },
-    
+
     // Egyptian Arabic (distinct)
     { pattern: /\byaa salam\b/i, countries: ['EG'], confidence: 0.90, description: 'Egyptian expression', type: 'phrase', formality: 'informal' },
 ];
@@ -372,7 +372,7 @@ export const ARABIC_PATTERNS: EnhancedLanguagePattern[] = [
 export const TURKISH_PATTERNS: EnhancedLanguagePattern[] = [
     // Turkish special characters
     { pattern: /[çğıöşü]{2,}/i, countries: ['TR'], confidence: 0.95, description: 'Turkish characters', type: 'script', ageGroup: 'all' },
-    
+
     // Common words
     { pattern: /\bmerhaba\b/i, countries: ['TR'], confidence: 0.90, description: 'Turkish hello', type: 'phrase', formality: 'neutral' },
     { pattern: /\bteşekkür\b/i, countries: ['TR'], confidence: 0.90, description: 'Turkish thank you', type: 'phrase', formality: 'formal' },
@@ -409,7 +409,7 @@ export const BRITISH_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /\bcolour\b/i, countries: ['GB'], confidence: 0.80, description: 'British spelling', type: 'phrase', formality: 'neutral' },
     { pattern: /\bfavourite\b/i, countries: ['GB'], confidence: 0.80, description: 'British spelling', type: 'phrase', formality: 'neutral' },
     { pattern: /\bcentre\b/i, countries: ['GB'], confidence: 0.75, description: 'British spelling', type: 'phrase', formality: 'neutral' },
-    
+
     // British slang
     { pattern: /\bmate\b/i, countries: ['GB', 'AU'], confidence: 0.85, description: 'British/Australian (friend)', type: 'slang', ageGroup: 'all' },
     { pattern: /\bcheers\b/i, countries: ['GB'], confidence: 0.80, description: 'British (thanks/bye)', type: 'slang', ageGroup: 'all' },
@@ -425,7 +425,7 @@ export const AMERICAN_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /\bcolor\b/i, countries: ['US'], confidence: 0.70, description: 'American spelling', type: 'phrase', formality: 'neutral' },
     { pattern: /\bfavorite\b/i, countries: ['US'], confidence: 0.70, description: 'American spelling', type: 'phrase', formality: 'neutral' },
     { pattern: /\bcenter\b/i, countries: ['US'], confidence: 0.65, description: 'American spelling', type: 'phrase', formality: 'neutral' },
-    
+
     // American slang
     { pattern: /\bdude\b/i, countries: ['US'], confidence: 0.80, description: 'American (bro)', type: 'slang', ageGroup: 'all' },
     { pattern: /\bbro\b/i, countries: ['US', 'AU'], confidence: 0.75, description: 'American/Australian (brother)', type: 'slang', ageGroup: 'all' },
@@ -441,12 +441,12 @@ export const AMERICAN_PATTERNS: EnhancedLanguagePattern[] = [
 export const FRENCH_PATTERNS: EnhancedLanguagePattern[] = [
     // French special characters
     { pattern: /[àâäæçéèêëïîôùûü]{2,}/i, countries: ['FR', 'CA', 'BE', 'CH'], confidence: 0.85, description: 'French accents', type: 'script', ageGroup: 'all' },
-    
+
     // French slang & phrases
     { pattern: /\bmdr\b/i, countries: ['FR'], confidence: 0.95, description: 'French (LOL)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bptdr\b/i, countries: ['FR'], confidence: 0.90, description: 'French (ROFL)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bouf\b/i, countries: ['FR'], confidence: 0.85, description: 'French slang (phew/wow)', type: 'slang', ageGroup: 'youth' },
-    { pattern: /\bgrave\b/i, countries: ['FR'], confidence: 0.80, description: 'French (seriously)', type: 'slang', ageGroup: 'youth' },    
+    { pattern: /\bgrave\b/i, countries: ['FR'], confidence: 0.80, description: 'French (seriously)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bbonjour\b/i, countries: ['FR'], confidence: 0.90, description: 'French hello', type: 'phrase', formality: 'neutral' },
     { pattern: /\bmerci\b/i, countries: ['FR'], confidence: 0.85, description: 'French thank you', type: 'phrase', formality: 'neutral' },
     { pattern: /\bc'est la vie\b/i, countries: ['FR'], confidence: 0.80, description: 'French (that\'s life)', type: 'phrase', formality: 'informal' },
@@ -456,7 +456,7 @@ export const FRENCH_PATTERNS: EnhancedLanguagePattern[] = [
 export const GERMAN_PATTERNS: EnhancedLanguagePattern[] = [
     // German special characters
     { pattern: /[äöüß]{1,}/i, countries: ['DE', 'AT', 'CH'], confidence: 0.95, description: 'German umlauts', type: 'script', ageGroup: 'all' },
-    
+
     // Common phrases
     { pattern: /\bguten tag\b/i, countries: ['DE', 'AT'], confidence: 0.90, description: 'German good day', type: 'phrase', formality: 'formal' },
     { pattern: /\bhallo\b/i, countries: ['DE', 'AT'], confidence: 0.80, description: 'German hello', type: 'phrase', formality: 'neutral' },
@@ -468,17 +468,17 @@ export const GERMAN_PATTERNS: EnhancedLanguagePattern[] = [
 export const SPANISH_PATTERNS: EnhancedLanguagePattern[] = [
     // Spanish special characters
     { pattern: /[áéíóúñ¿¡]{1,}/i, countries: ['ES', 'MX', 'AR', 'CL', 'CO', 'PE'], confidence: 0.85, description: 'Spanish accents', type: 'script', ageGroup: 'all' },
-    
+
     // Spanish laughing
     { pattern: /\bjajaja+\b/i, countries: ['ES', 'MX', 'AR', 'CL', 'CO'], confidence: 0.90, description: 'Spanish laughing', type: 'slang', ageGroup: 'all' },
     { pattern: /\bjejeje+\b/i, countries: ['ES', 'MX'], confidence: 0.85, description: 'Spanish giggling', type: 'slang', ageGroup: 'all' },
-    
+
     // Spain-specific
     { pattern: /\btío\b/i, countries: ['ES'], confidence: 0.90, description: 'Spanish (dude)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\btía\b/i, countries: ['ES'], confidence: 0.90, description: 'Spanish (girl)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bguay\b/i, countries: ['ES'], confidence: 0.90, description: 'Spanish (cool)', type: 'slang', ageGroup: 'all' },
     { pattern: /\bmola\b/i, countries: ['ES'], confidence: 0.90, description: 'Spanish (cool)', type: 'slang', ageGroup: 'youth' },
-    
+
     // Common
     { pattern: /\bhola\b/i, countries: ['ES', 'MX', 'AR'], confidence: 0.80, description: 'Spanish hello', type: 'phrase', formality: 'neutral' },
     { pattern: /\bgracias\b/i, countries: ['ES', 'MX', 'AR'], confidence: 0.80, description: 'Spanish thank you', type: 'phrase', formality: 'neutral' },
@@ -496,7 +496,7 @@ export const MEXICAN_PATTERNS: EnhancedLanguagePattern[] = [
 export const BRAZILIAN_PATTERNS: EnhancedLanguagePattern[] = [
     // Portuguese special characters
     { pattern: /[ãõçâêôá]{1,}/i, countries: ['BR', 'PT'], confidence: 0.85, description: 'Portuguese accents', type: 'script', ageGroup: 'all' },
-    
+
     // Brazilian laughing & slang
     { pattern: /\bkkkk+\b/i, countries: ['BR'], confidence: 0.98, description: 'Brazilian laughing', type: 'slang', ageGroup: 'all' },
     { pattern: /\brsrs+\b/i, countries: ['BR'], confidence: 0.95, description: 'Brazilian laughing', type: 'slang', ageGroup: 'all' },
@@ -504,7 +504,7 @@ export const BRAZILIAN_PATTERNS: EnhancedLanguagePattern[] = [
     { pattern: /\bmano\b/i, countries: ['BR'], confidence: 0.85, description: 'Brazilian (bro)', type: 'slang', ageGroup: 'youth' },
     { pattern: /\bcarai\b/i, countries: ['BR'], confidence: 0.90, description: 'Brazilian expression', type: 'slang', ageGroup: 'all' },
     { pattern: /\blegal\b/i, countries: ['BR'], confidence: 0.80, description: 'Brazilian (cool)', type: 'slang', ageGroup: 'all' },
-    
+
     // Common phrases
     { pattern: /\bolá\b/i, countries: ['BR', 'PT'], confidence: 0.80, description: 'Portuguese hello', type: 'phrase', formality: 'neutral' },
     { pattern: /\bobrigado\b/i, countries: ['BR', 'PT'], confidence: 0.85, description: 'Portuguese thank you (male)', type: 'phrase', formality: 'neutral' },
@@ -514,7 +514,7 @@ export const BRAZILIAN_PATTERNS: EnhancedLanguagePattern[] = [
 export const ITALIAN_PATTERNS: EnhancedLanguagePattern[] = [
     // Italian special characters
     { pattern: /[àèéìòù]{1,}/i, countries: ['IT'], confidence: 0.90, description: 'Italian accents', type: 'script', ageGroup: 'all' },
-    
+
     // Common phrases
     { pattern: /\bciao\b/i, countries: ['IT'], confidence: 0.90, description: 'Italian hello/bye', type: 'phrase', formality: 'informal' },
     { pattern: /\bgrazie\b/i, countries: ['IT'], confidence: 0.90, description: 'Italian thank you', type: 'phrase', formality: 'neutral' },
@@ -525,7 +525,7 @@ export const ITALIAN_PATTERNS: EnhancedLanguagePattern[] = [
 export const RUSSIAN_PATTERNS: EnhancedLanguagePattern[] = [
     // Cyrillic script
     { pattern: /[\u0400-\u04FF]{3,}/i, countries: ['RU', 'UA', 'BY', 'KZ'], confidence: 0.95, description: 'Cyrillic script', type: 'script', ageGroup: 'all' },
-    
+
     // Russian common words
     { pattern: /\bпривет\b/i, countries: ['RU'], confidence: 0.95, description: 'Russian hello', type: 'phrase', formality: 'informal' },
     { pattern: /\bспасибо\b/i, countries: ['RU'], confidence: 0.95, description: 'Russian thank you', type: 'phrase', formality: 'neutral' },

@@ -32,9 +32,14 @@ const config: Config = {
                     '50%': { transform: 'translate(5px, 0)' },
                     '75%': { transform: 'translate(-5px, 0)' },
                 },
+                'neon-pulse': {
+                    '0%, 100%': { opacity: '1' },
+                    '50%': { opacity: '0.5' },
+                },
             },
             animation: {
                 shake: 'shake 0.5s ease-in-out',
+                'neon-pulse': 'neon-pulse 2s ease-in-out infinite',
             },
         },
     },

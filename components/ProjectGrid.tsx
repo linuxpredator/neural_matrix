@@ -52,11 +52,12 @@ const projects = [
     },
     {
         id: "quantum-cipher",
-        title: "CIPHER_NET",
-        description: "Quantum-resistant encryption protocol for decentralized communications.",
-        tech: ["Rust", "WASM", "Cryptography"],
-        status: "ENCRYPTED",
-        delay: 0.6
+        title: "ISLAMIC_FALAK",
+        description: "Islamic astronomy toolkit with prayer times, Qibla direction, Hijri calendar, and moon phases.",
+        tech: ["Next.js", "Astronomy", "i18n"],
+        status: "OPERATIONAL",
+        delay: 0.6,
+        link: "/demo/quantum-cipher"
     }
 ];
 
