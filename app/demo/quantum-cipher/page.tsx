@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { MapPin, RefreshCw, Globe } from 'lucide-react';
+import Link from 'next/link';
+import { MapPin, RefreshCw, Globe, ArrowLeft } from 'lucide-react';
 import PrayerTimesCard from './components/PrayerTimesCard';
 import QiblaCompass from './components/QiblaCompass';
 import HijriCalendar from './components/HijriCalendar';
@@ -100,6 +101,17 @@ export default function IslamicFalakPage() {
 
     return (
         <div className="min-h-screen bg-matrix-black text-matrix-green font-mono p-4 md:p-8">
+            {/* Back to System Link */}
+            <div className="max-w-7xl mx-auto mb-4">
+                <Link
+                    href="/"
+                    className="inline-flex items-center gap-2 px-4 py-2 bg-black border-2 border-matrix-green/40 text-matrix-green hover:bg-matrix-green/10 hover:border-matrix-green transition-all text-sm"
+                >
+                    <ArrowLeft size={16} />
+                    <span>BACK_TO_SYSTEM</span>
+                </Link>
+            </div>
+
             {/* Header */}
             <header className="max-w-7xl mx-auto mb-8 border-b border-matrix-green/30 pb-6">
                 <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
