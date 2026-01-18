@@ -21,7 +21,7 @@ export default function ESP32SimPage() {
                 <span className="text-sm">Back to System</span>
             </Link>
 
-            <div className="max-w-[1800px] mx-auto relative z-10">
+            <div className="max-w-[1800px] mx-auto relative z-10 pt-12">
                 {/* Header */}
                 <header className="mb-8 border-b border-matrix-green/30 pb-6">
                     <div className="flex items-center justify-between flex-wrap gap-4">
@@ -53,8 +53,8 @@ export default function ESP32SimPage() {
                             <button
                                 onClick={() => setIsRunning(!isRunning)}
                                 className={`flex items-center gap-2 px-4 py-2 border-2 transition-all text-sm font-mono uppercase ${isRunning
-                                        ? 'bg-matrix-green/20 border-matrix-green text-matrix-green shadow-[0_0_10px_rgba(0,255,65,0.4)]'
-                                        : 'bg-black border-matrix-green/40 text-matrix-green/60'
+                                    ? 'bg-matrix-green/20 border-matrix-green text-matrix-green shadow-[0_0_10px_rgba(0,255,65,0.4)]'
+                                    : 'bg-black border-matrix-green/40 text-matrix-green/60'
                                     }`}
                             >
                                 {isRunning ? (
