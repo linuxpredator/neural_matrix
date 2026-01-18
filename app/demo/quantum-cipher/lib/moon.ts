@@ -1,9 +1,9 @@
-import { MoonIllumination, SearchMoonPhase } from 'astronomy-engine';
+import { Illumination, SearchMoonPhase } from 'astronomy-engine';
 import type { MoonPhase } from '../types/falak';
 
 export function getMoonPhase(date: Date = new Date()): MoonPhase {
     // Get moon illumination percentage
-    const illum = MoonIllumination(date);
+    const illum = Illumination('Moon', date);
     const illumination = Math.round(illum.phase_fraction * 100);
 
     // Find the most recent new moon
