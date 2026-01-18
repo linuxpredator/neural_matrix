@@ -15,7 +15,7 @@ const projects = [
         link: "/projek/tiktokuserfinder"
     },
     {
-        id: "saas-dashboard",
+        id: "mql5cloudbacktester",
         title: "MQL5_CLOUD_BACKTESTER",
         description: "Cloud-based fintech backtesting platform with real-time equity simulation.",
         tech: ["Next.js", "Recharts", "Fintech"],
@@ -33,12 +33,13 @@ const projects = [
         link: "/projek/unionospro"
     },
     {
-        id: "crypto-tracker",
-        title: "BLOCK_WATCH",
-        description: "Real-time cryptocurrency tracking and algorithmic trading signals.",
-        tech: ["Solidity", "Ethers.js", "Graph"],
-        status: "SYNCING",
-        delay: 0.4
+        id: "neontris",
+        title: "NEONTRIS",
+        description: "Cyberpunk Tetris with custom blocks, rarity system, and neon visual effects.",
+        tech: ["Next.js", "TypeScript", "Game Dev"],
+        status: "ONLINE",
+        delay: 0.4,
+        link: "/projek/tetris"
     },
     {
         id: "terminal-portfolio",
@@ -46,7 +47,8 @@ const projects = [
         description: "Browser-based terminal operating system simulation.",
         tech: ["TypeScript", "Xterm.js", "Linux"],
         status: "ROOT_ACCESS",
-        delay: 0.5
+        delay: 0.5,
+        link: "/projek/esp32sim"
     },
     {
         id: "quantum-cipher",
