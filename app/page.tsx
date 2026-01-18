@@ -1,6 +1,7 @@
 import Navigation from "@/components/Navigation";
 import MatrixRain from "@/components/MatrixRain";
 import Hero from "@/components/Hero";
+import About from "@/components/About";
 import ProjectGrid from "@/components/ProjectGrid";
 import StatusBar from "@/components/StatusBar";
 
@@ -16,6 +17,7 @@ export default function Home() {
 
       <div className="relative z-10 flex flex-col min-h-screen">
         <Hero />
+        <About />
         <div id="projects">
           <ProjectGrid />
         </div>
