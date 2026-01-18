@@ -12,6 +12,7 @@ import GameBoard from './components/GameBoard';
 import ScorePanel from './components/ScorePanel';
 import PiecePreview from './components/PiecePreview';
 import Controls from './components/Controls';
+import TouchControls from './components/TouchControls';
 
 export default function NeontrisPage() {
     // Prevent SSR hydration mismatch - only render game on client
@@ -112,10 +113,14 @@ export default function NeontrisPage() {
                     </div>
                 </div>
 
-                {/* Mobile touch controls placeholder */}
-                <div className="mt-6 lg:hidden text-center text-white/40 text-xs font-mono">
-                    Use keyboard controls • Touch support coming soon
-                </div>
+                {/* Mobile touch controls */}
+                <TouchControls
+                    controls={controls}
+                    gameState={{
+                        isPaused: state.isPaused,
+                        gameOver: state.gameOver
+                    }}
+                />
 
                 {/* Footer info */}
                 <div className="mt-8 text-center text-white/30 text-xs font-mono">
