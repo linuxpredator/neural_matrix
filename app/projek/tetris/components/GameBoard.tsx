@@ -70,7 +70,7 @@ export default function GameBoard({ state }: GameBoardProps) {
             }
         }
 
-        const baseClass = "w-full h-full border border-neon-cyan/20 transition-all duration-75";
+        const baseClass = "w-full h-full transition-all duration-75";
 
         if (isCurrentPiece && currentBlockRarity) {
             const color = state.currentPiece!.color;
@@ -132,17 +132,7 @@ export default function GameBoard({ state }: GameBoardProps) {
                 boxShadow: '0 0 30px rgba(0, 245, 255, 0.3)',
             }}
         >
-            {/* Grid overlay for holographic effect */}
-            <div
-                className="absolute inset-0 opacity-10 pointer-events-none rounded-lg"
-                style={{
-                    backgroundImage: `
-            linear-gradient(#00f5ff 1px, transparent 1px),
-            linear-gradient(90deg, #00f5ff 1px, transparent 1px)
-          `,
-                    backgroundSize: '30px 30px',
-                }}
-            />
+
 
             {/* Game grid */}
             <div
