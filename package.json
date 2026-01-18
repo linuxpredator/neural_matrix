@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@upstash/redis": "^1.36.1",
+    "@wokwi/elements": "^1.9.1",
     "cheerio": "^1.1.2",
     "clsx": "^2.1.1",
     "framer-motion": "^12.26.2",

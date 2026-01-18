@@ -42,8 +42,8 @@ const projects = [
         link: "/projek/tetris"
     },
     {
-        id: "terminal-portfolio",
-        title: "SHELL_OS",
+        id: "esp32sim",
+        title: "ESP32_SIMULATOR",
         description: "Browser-based terminal operating system simulation.",
         tech: ["TypeScript", "Xterm.js", "Linux"],
         status: "ROOT_ACCESS",
