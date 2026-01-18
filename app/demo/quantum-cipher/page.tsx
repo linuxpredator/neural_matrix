@@ -107,7 +107,7 @@ export default function IslamicFalakPage() {
                     href="/"
                     className="inline-flex items-center gap-2 px-4 py-2 text-matrix-green hover:text-matrix-green/80 transition-all text-sm font-mono"
                 >
-                    <span>← BACK_TO_SYSTEM</span>
+                    <span>← Back to System</span>
                 </Link>
             </div>
 
