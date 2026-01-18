@@ -1,17 +1,18 @@
-import { Illumination, SearchMoonPhase } from 'astronomy-engine';
 import type { MoonPhase } from '../types/falak';
 
 export function getMoonPhase(date: Date = new Date()): MoonPhase {
-    // Get moon illumination percentage
-    const illum = Illumination('Moon', date);
-    const illumination = Math.round(illum.phase_fraction * 100);
+    // Simple lunar phase calculation (Julian Day method)
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
 
-    // Find the most recent new moon
-    const newMoon = SearchMoonPhase(date);
-
-    // Calculate days since new moon
-    const daysSinceNew = (date.getTime() - newMoon.getTime()) / (1000 * 60 * 60 * 24);
+    // Calculate days since known new moon (Jan 6, 2000)
+    const jd = julianDate(year, month, day);
+    const daysSinceNew = (jd - 2451550.1) % 29.53058867;
     const age = Math.round(daysSinceNew);
+
+    // Calculate illumination
+    const illumination = Math.round((1 - Math.cos(2 * Math.PI * (daysSinceNew / 29.53058867))) * 50);
 
     // Determine phase name and waxing status
     const { phase, isWaxing } = getPhaseName(age, illumination);
@@ -22,6 +23,14 @@ export function getMoonPhase(date: Date = new Date()): MoonPhase {
         age,
         isWaxing
     };
+}
+
+function julianDate(year: number, month: number, day: number): number {
+    let a = Math.floor((14 - month) / 12);
+    let y = year + 4800 - a;
+    let m = month + 12 * a - 3;
+
+    return day + Math.floor((153 * m + 2) / 5) + 365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
 }
 
 function getPhaseName(age: number, illumination: number): { phase: string; isWaxing: boolean } {
