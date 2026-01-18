@@ -52,7 +52,7 @@ PRIMARY_CHANNEL: linuxpredator@gmail.com
                     </a>
 
                     <a
-                        href="https://linkedin.com/in/helmi-khamis"
+                        href="https://www.linkedin.com/in/muhammad-helmi-49104483/"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="flex items-center gap-3 px-6 py-3 bg-black border-2 border-matrix-green/40 text-matrix-green hover:bg-matrix-green/10 hover:border-matrix-green transition-all font-mono text-sm group"
