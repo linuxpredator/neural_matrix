@@ -51,13 +51,13 @@ const projects = [
         link: "/projek/esp32sim"
     },
     {
-        id: "quantum-cipher",
+        id: "islamicfalak",
         title: "ISLAMIC_FALAK",
         description: "Islamic astronomy toolkit with prayer times, Qibla direction, Hijri calendar, and moon phases.",
         tech: ["Next.js", "Astronomy", "i18n"],
         status: "OPERATIONAL",
         delay: 0.6,
-        link: "/demo/quantum-cipher"
+        link: "/projek/islamicfalak"
     }
 ];
 
