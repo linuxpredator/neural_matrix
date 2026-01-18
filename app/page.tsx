@@ -17,10 +17,10 @@ export default function Home() {
 
       <div className="relative z-10 flex flex-col min-h-screen">
         <Hero />
-        <About />
         <div id="projects">
           <ProjectGrid />
         </div>
+        <About />
       </div>
 
       <StatusBar />
