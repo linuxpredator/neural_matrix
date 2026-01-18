@@ -10,7 +10,7 @@ import { GameState, BlockRarity } from './types';
 export function useGameEngine() {
     const [state, dispatch] = useReducer(gameReducer, null, getInitialState);
     const lastDropTime = useRef(Date.now());
-    const animationFrameId = useRef<number>();
+    const animationFrameId = useRef<number | undefined>(undefined);
 
     // Movement controls
     const moveLeft = useCallback(() => dispatch({ type: 'MOVE_LEFT' }), []);

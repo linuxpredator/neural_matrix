@@ -84,7 +84,7 @@ function useTetris() {
     const [isPaused, setIsPaused] = useState(false);
     const [clearedRows, setClearedRows] = useState<number[]>([]);
 
-    const gameLoopRef = useRef<number>();
+    const gameLoopRef = useRef<number | undefined>(undefined);
 
     // Create new piece
     const createNewPiece = useCallback(() => {
